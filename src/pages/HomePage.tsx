@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageRoute, Product, ServiceItem } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { useSmoothScroll } from '../context/SmoothScrollContext';
 import { BUSINESS_INFO, PRODUCTS_DATA, SERVICES_DATA, REVIEWS_DATA, SERVICE_AREAS_DATA } from '../data/mockData';
-import { getProductWhatsAppUrl, getServiceEnquiryWhatsAppUrl, getGeneralWhatsAppUrl } from '../utils/whatsapp';
+import { getProductWhatsAppUrl, getServiceEnquiryWhatsAppUrl, getGeneralWhatsAppUrl, getDirectWhatsAppBookingUrl } from '../utils/whatsapp';
 import { 
   Droplets, 
   ShieldCheck, 
@@ -12,6 +12,7 @@ import {
   PhoneCall, 
   MessageCircle, 
   ChevronRight, 
+  ChevronLeft,
   CheckCircle, 
   Star, 
   Play, 
@@ -26,15 +27,19 @@ import {
   Layers,
   HeartHandshake,
   Navigation,
-  Clock
+  Clock,
+  Home,
+  Download,
+  CalendarCheck
 } from 'lucide-react';
 
 interface HomePageProps {
   onNavigate: (page: PageRoute) => void;
   onSelectService?: (serviceName: string) => void;
+  onOpenInstallModal?: () => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService, onOpenInstallModal }) => {
   const { isTelugu, t } = useLanguage();
   const { scrollToTop } = useSmoothScroll();
 
@@ -45,6 +50,112 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+
+  // Hero Image Carousel State
+  const [heroSlide, setHeroSlide] = useState(0);
+  const [isHeroAutoPlay, setIsHeroAutoPlay] = useState(true);
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+  const heroTouchStartX = useRef<number | null>(null);
+  const heroTouchEndX = useRef<number | null>(null);
+
+  // 4 Featured Showcase Slides for Water Purifiers & Services
+  const heroSlides = [
+    {
+      id: 'slide-1',
+      image: '/images/brand/purifier-hero-slide-2.jpg',
+      badgeEn: 'Smart Digital RO • Pure Mineral',
+      badgeTe: 'స్మార్ట్ RO • ప్యూర్ మినరల్',
+      titleEn: "Priya's AquaFresh Sleek Wall-Mount RO",
+      titleTe: "ప్రియాస్ ఆక్వాఫ్రెష్ స్లీక్ వాల్-మౌంట్ RO",
+      highlightEn: 'Multi-stage RO + UV purification with active copper infusion & digital pure water indicator',
+      highlightTe: 'మల్టీ-స్టేజ్ RO + UV మరియు కాపర్ ఇన్ఫ్యూషన్ తో స్వచ్ఛమైన తాగునీరు',
+      ctaTextEn: 'Explore Purifiers',
+      ctaTextTe: 'ప్రాడక్ట్స్ చూడండి',
+      targetPage: 'water-purifiers' as PageRoute,
+      accent: 'cyan'
+    },
+    {
+      id: 'slide-2',
+      image: '/images/brand/purifier-hero-slide-3.jpg',
+      badgeEn: 'Advanced 6-Stage Filtration',
+      badgeTe: 'అడ్వాన్స్‌డ్ 6-స్టేజ్ ఫిల్ట్రేషన్',
+      titleEn: 'Heavy-Duty Multi-Stage RO Filtration',
+      titleTe: 'హెవీ-డ్యూటీ RO వాటర్ ప్యూరిఫైయర్',
+      highlightEn: 'High-rejection thin-film membrane for high TDS borewell & tap water with transparent filter bowls',
+      highlightTe: 'బోరు నీటిలోని ఉప్పు, బ్యాక్టీరియా మరియు లవణాల సంపూర్ణ నివారణ',
+      ctaTextEn: 'View Specifications',
+      ctaTextTe: 'వివరాలు చూడండి',
+      targetPage: 'water-purifiers' as PageRoute,
+      accent: 'sky'
+    },
+    {
+      id: 'slide-3',
+      image: '/images/brand/hero-water-purifiers.jpg',
+      badgeEn: '1 Year Guaranty • Best Selling',
+      badgeTe: '1 ఇయర్ గ్యారంటీ • బెస్ట్ సెల్లింగ్',
+      titleEn: "Priya's AquaFresh Domestic & Commercial",
+      titleTe: 'ప్రియాస్ ఆక్వాఫ్రెష్ డొమెస్టిక్ & కమర్షియల్',
+      highlightEn: 'All types of water purifiers with 1-Year Guaranty, food-grade storage & continuous service',
+      highlightTe: 'అన్ని రకాల వాటర్ ప్యూరిఫైయర్లపై 1 ఇయర్ గ్యారంటీ & స్థానిక విశ్వసనీయ సేవలు',
+      ctaTextEn: 'WhatsApp Booking',
+      ctaTextTe: 'వాట్సాప్ లో బుక్ చేయండి',
+      isWhatsApp: true,
+      targetPage: 'water-purifiers' as PageRoute,
+      accent: 'emerald'
+    },
+    {
+      id: 'slide-4',
+      image: '/images/brand/purifier-service-slide-4.jpg',
+      badgeEn: 'Doorstep Service • Raghunathpally & Jangaon',
+      badgeTe: 'డోర్‌స్టెప్ సర్వీస్ • రఘునాథపల్లి & జనగామ',
+      titleEn: 'Expert Doorstep Service & Maintenance',
+      titleTe: 'నిపుణులైన సర్వీస్ & త్వరిత రిపేర్లు',
+      highlightEn: 'Experienced technicians for leak fixes, filter replacements, and instant diagnostics at your home',
+      highlightTe: 'డోర్‌స్టెప్ ఇన్స్టాలేషన్, జనరల్ సర్వీస్ మరియు ఒరిజినల్ స్పేర్ పార్ట్స్ సదుపాయం',
+      ctaTextEn: 'Book Doorstep Service',
+      ctaTextTe: 'సర్వీస్ బుకింగ్',
+      targetPage: 'service-booking' as PageRoute,
+      accent: 'cyan'
+    }
+  ];
+
+  // Auto-slide effect (cycles every 4500ms)
+  useEffect(() => {
+    if (!isHeroAutoPlay || isHeroHovered) return;
+    const interval = setInterval(() => {
+      setHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isHeroAutoPlay, isHeroHovered, heroSlides.length]);
+
+  const handleNextHeroSlide = () => {
+    setHeroSlide((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const handlePrevHeroSlide = () => {
+    setHeroSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const handleHeroTouchStart = (e: React.TouchEvent) => {
+    heroTouchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleHeroTouchMove = (e: React.TouchEvent) => {
+    heroTouchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleHeroTouchEnd = () => {
+    if (heroTouchStartX.current !== null && heroTouchEndX.current !== null) {
+      const diff = heroTouchStartX.current - heroTouchEndX.current;
+      if (diff > 45) {
+        handleNextHeroSlide();
+      } else if (diff < -45) {
+        handlePrevHeroSlide();
+      }
+    }
+    heroTouchStartX.current = null;
+    heroTouchEndX.current = null;
+  };
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -73,20 +184,192 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
     scrollToTop(false);
   };
 
+  // Reusable Hero Carousel subcomponent (rendered on desktop and mobile)
+  const renderHeroCarousel = () => (
+    <div className="relative w-full max-w-2xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-cyan-500/30 glass-card-dark p-2 sm:p-2.5 group select-none">
+      {/* Outer Ambient Glow */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 via-sky-600/20 to-emerald-500/20 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 -z-10 pointer-events-none"></div>
+
+      {/* Carousel Viewport (Bigger, Taller, Wide Aspect) */}
+      <div
+        className="relative aspect-[4/3] xs:aspect-[16/11] sm:aspect-[16/10] min-h-[360px] xs:min-h-[390px] sm:min-h-[440px] lg:min-h-[470px] rounded-2xl overflow-hidden bg-slate-950"
+        onMouseEnter={() => setIsHeroHovered(true)}
+        onMouseLeave={() => setIsHeroHovered(false)}
+        onTouchStart={handleHeroTouchStart}
+        onTouchMove={handleHeroTouchMove}
+        onTouchEnd={handleHeroTouchEnd}
+      >
+        {/* All Slides with Cross-Fade */}
+        {heroSlides.map((slide, idx) => {
+          const isActive = idx === heroSlide;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 w-full h-full transition-all duration-700 ease-in-out ${
+                isActive ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-105 pointer-events-none z-0'
+              }`}
+              aria-hidden={!isActive}
+            >
+              {/* Background Purifier Image */}
+              <img
+                src={slide.image}
+                alt={slide.titleEn}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                loading={idx === 0 ? "eager" : "lazy"}
+              />
+              
+              {/* Multilayer gradient scrims for pristine text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-transparent"></div>
+
+              {/* Slide Top Badge */}
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2 z-20">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-slate-950/80 backdrop-blur-md border border-cyan-400/40 text-cyan-300 shadow-lg">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>{isTelugu ? slide.badgeTe : slide.badgeEn}</span>
+                </span>
+              </div>
+
+              {/* Slide Bottom Glassmorphic Content Card */}
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 p-3.5 sm:p-5 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-white/10 shadow-2xl z-20">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                  <div className="space-y-1 max-w-md text-left">
+                    <p className="text-[11px] uppercase font-extrabold text-cyan-400 tracking-wider flex items-center gap-1.5">
+                      <Droplets className="w-3.5 h-3.5 text-cyan-300" />
+                      <span>{isTelugu ? 'ప్యూర్ ఆక్వాఫ్రెష్' : "Priya's AquaFresh Collection"}</span>
+                    </p>
+                    <h3 className="text-white text-base sm:text-lg lg:text-xl font-extrabold leading-snug">
+                      {isTelugu ? slide.titleTe : slide.titleEn}
+                    </h3>
+                    <p className="text-slate-300 text-xs leading-relaxed line-clamp-2">
+                      {isTelugu ? slide.highlightTe : slide.highlightEn}
+                    </p>
+                  </div>
+
+                  {/* Direct Action Button on Slide */}
+                  <div className="shrink-0 flex items-center gap-2">
+                    {slide.isWhatsApp ? (
+                      <a
+                        href={getGeneralWhatsAppUrl(isTelugu)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all flex items-center gap-1.5"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 fill-white text-emerald-600" />
+                        <span>{isTelugu ? 'వాట్సాప్' : 'WhatsApp'}</span>
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          onNavigate(slide.targetPage);
+                          scrollToTop(false);
+                        }}
+                        className="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <span>{isTelugu ? slide.ctaTextTe : slide.ctaTextEn}</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Floating 1-Year Guarantee Badge pinned on top-right */}
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-18 h-18 sm:w-20 sm:h-20 rounded-full shadow-2xl p-1 bg-gradient-to-tr from-amber-400 to-yellow-300 animate-float z-30 pointer-events-none">
+          <div className="w-full h-full rounded-full bg-slate-900 flex flex-col items-center justify-center text-center p-1 border border-yellow-400/50">
+            <span className="text-[9.5px] sm:text-[10px] font-bold text-yellow-400 leading-none">1 YEAR</span>
+            <span className="text-[7.5px] sm:text-[8px] font-extrabold text-white uppercase tracking-tighter">GUARANTY</span>
+            <div className="flex gap-0.5 mt-0.5">
+              <Star className="w-2 h-2 fill-yellow-400 text-yellow-400" />
+              <Star className="w-2 h-2 fill-yellow-400 text-yellow-400" />
+              <Star className="w-2 h-2 fill-yellow-400 text-yellow-400" />
+            </div>
+          </div>
+        </div>
+
+        {/* Previous Slide Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePrevHeroSlide();
+          }}
+          aria-label="Previous Slide"
+          className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-950/60 hover:bg-cyan-500 text-white hover:text-slate-950 border border-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-200 z-30 opacity-80 hover:opacity-100 cursor-pointer shadow-lg active:scale-95"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        {/* Next Slide Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleNextHeroSlide();
+          }}
+          aria-label="Next Slide"
+          className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-950/60 hover:bg-cyan-500 text-white hover:text-slate-950 border border-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-200 z-30 opacity-80 hover:opacity-100 cursor-pointer shadow-lg active:scale-95"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+
+        {/* Slide Indicator Bar & Autoplay Toggle */}
+        <div className="absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/10 z-30">
+          <div className="flex items-center gap-1.5">
+            {heroSlides.map((_, dotIdx) => (
+              <button
+                key={dotIdx}
+                onClick={() => setHeroSlide(dotIdx)}
+                aria-label={`Go to slide ${dotIdx + 1}`}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  dotIdx === heroSlide
+                    ? 'w-7 sm:w-8 h-1.5 bg-gradient-to-r from-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]'
+                    : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/80'
+                }`}
+              />
+            ))}
+          </div>
+          <div className="h-3 w-px bg-white/20 mx-0.5"></div>
+          <button
+            onClick={() => setIsHeroAutoPlay(!isHeroAutoPlay)}
+            title={isHeroAutoPlay ? "Pause Auto-slide" : "Play Auto-slide"}
+            className="text-slate-300 hover:text-cyan-400 transition-colors cursor-pointer"
+          >
+            {isHeroAutoPlay ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+          </button>
+          <span className="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider">
+            0{heroSlide + 1}/0{heroSlides.length}
+          </span>
+        </div>
+
+        {/* Animated Progress Bar along the bottom of the card */}
+        {isHeroAutoPlay && !isHeroHovered && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-900/60 z-30 overflow-hidden">
+            <div
+              key={heroSlide}
+              className="h-full bg-gradient-to-r from-cyan-400 via-sky-400 to-emerald-400 animate-hero-progress"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full">
       {/* ======================================================= */}
       {/* SECTION 1: HERO SECTION                                 */}
       {/* ======================================================= */}
-      <section className="relative overflow-hidden bg-hero-mesh text-white pt-12 pb-20 lg:pt-16 lg:pb-28">
+      <section className="relative overflow-hidden bg-hero-mesh text-white pt-10 pb-16 lg:pt-14 lg:pb-24">
         {/* Decorative Floating Droplets & Glows */}
         <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-blue-600/20 blur-3xl pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Headlines & CTAs */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
+            {/* Left Column: Headlines, Highlights & CTAs */}
+            <div className="lg:col-span-6 space-y-5 text-center lg:text-left">
               {/* Trust Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-semibold shadow-inner backdrop-blur-md">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
@@ -94,15 +377,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-tight">
                 {t("Pure Water.", "స్వచ్ఛమైన నీరు.")}{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-200 to-emerald-300">
                   {t("Healthy Life.", "ఆరోగ్యకరమైన జీవితం.")}
                 </span>
               </h1>
 
+              {/* Mobile Only: Big Auto-Sliding Purifier Carousel placed right below options & headline */}
+              <div className="block lg:hidden w-full pt-2 pb-2">
+                {renderHeroCarousel()}
+              </div>
+
               {/* Subheadline */}
-              <p className="text-lg sm:text-xl font-semibold text-slate-200 leading-snug">
+              <p className="text-base sm:text-xl font-semibold text-slate-200 leading-snug">
                 {t(
                   BUSINESS_INFO.subheadlineEn,
                   BUSINESS_INFO.subheadlineTe
@@ -110,7 +398,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
               </p>
 
               {/* Supporting Description */}
-              <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
                 {t(
                   BUSINESS_INFO.supportingTextEn,
                   BUSINESS_INFO.supportingTextTe
@@ -133,7 +421,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
               </div>
 
               {/* Primary Call to Actions */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-1">
                 {/* Explore Products */}
                 <button
                   onClick={() => onNavigate('water-purifiers')}
@@ -165,7 +453,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
               </div>
 
               {/* Verified Features Pills */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4 text-xs text-slate-300">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2 text-xs text-slate-300">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   <span>Doorstep Service</span>
@@ -181,48 +469,105 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
               </div>
             </div>
 
-            {/* Right Column: Hero Showcase Visual */}
-            <div className="lg:col-span-5 relative flex justify-center">
-              <div className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl border border-white/10 glass-card-dark p-2 group">
-                {/* Background Hero Reference Image */}
-                <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-slate-950">
-                  <img
-                    src="/images/brand/hero-water-purifiers.jpg"
-                    alt="Water Purifier Showcase Priya's AquaFresh"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-
-                  {/* Water splash label */}
-                  <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-slate-900/90 backdrop-blur-md border border-white/10 flex items-center justify-between">
-                    <div>
-                      <p className="text-xs uppercase font-extrabold text-cyan-400 tracking-wider">
-                        {t("Multi-Stage RO Technology", "మల్టీ-స్టేజ్ RO టెక్నాలజీ")}
-                      </p>
-                      <p className="text-white text-sm font-bold">
-                        Priya's AquaFresh Domestic & Commercial
-                      </p>
-                    </div>
-                    <div className="w-9 h-9 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center">
-                      <Droplets className="w-5 h-5 text-cyan-300" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating 1-Year Guarantee Badge on Hero Card */}
-                <div className="absolute -top-3 -right-3 w-20 h-20 rounded-full shadow-2xl p-1 bg-gradient-to-tr from-amber-400 to-yellow-300 animate-float">
-                  <div className="w-full h-full rounded-full bg-slate-900 flex flex-col items-center justify-center text-center p-1 border border-yellow-400/50">
-                    <span className="text-[10px] font-bold text-yellow-400 leading-none">1 YEAR</span>
-                    <span className="text-[8px] font-extrabold text-white uppercase tracking-tighter">GUARANTY</span>
-                    <div className="flex gap-0.5 mt-0.5">
-                      <Star className="w-2 h-2 fill-yellow-400 text-yellow-400" />
-                      <Star className="w-2 h-2 fill-yellow-400 text-yellow-400" />
-                      <Star className="w-2 h-2 fill-yellow-400 text-yellow-400" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Right Column: Hero Showcase Visual Carousel (Desktop & Tablet) */}
+            <div className="hidden lg:flex lg:col-span-6 relative justify-center w-full">
+              {renderHeroCarousel()}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ======================================================= */}
+      {/* SECTION 1.5: MOBILE SCREEN 5 ESSENTIAL QUICK OPTIONS    */}
+      {/* 1. Home Page | 2. Sales & Services | 3. Booking | 4. Install App | 5. WhatsApp Booking */}
+      {/* ======================================================= */}
+      <section className="lg:hidden w-full bg-slate-900 border-y border-cyan-500/30 px-3 sm:px-4 py-3 shadow-xl">
+        <div className="max-w-md mx-auto">
+          <div className="flex items-center justify-between mb-2 px-1">
+            <span className="text-[11px] font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{isTelugu ? 'ముఖ్యమైన ఆప్షన్లు' : 'Quick Options'}</span>
+            </span>
+            <span className="text-[10px] text-slate-400 font-medium">
+              {isTelugu ? 'రఘునాథపల్లి & జనగామ' : "Priya's AquaFresh"}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-5 gap-1.5">
+            {/* 1. Home Page */}
+            <button
+              onClick={() => {
+                onNavigate('home');
+                scrollToTop(false);
+              }}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-cyan-500/20 to-blue-600/30 text-cyan-300 ring-1 ring-cyan-400/50 shadow-sm transition-all active:scale-95 cursor-pointer"
+              title="Home Page"
+            >
+              <Home className="w-4 h-4 mb-1 text-cyan-400" />
+              <span className="text-[9.5px] sm:text-[10.5px] font-bold leading-tight truncate w-full text-center">
+                {isTelugu ? 'హోమ్' : 'Home'}
+              </span>
+            </button>
+
+            {/* 2. Sales & Services */}
+            <button
+              onClick={() => {
+                onNavigate('services');
+                scrollToTop(false);
+              }}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 text-slate-200 hover:text-white border border-slate-700/80 transition-all active:scale-95 cursor-pointer"
+              title="Sales and Services"
+            >
+              <Wrench className="w-4 h-4 mb-1 text-cyan-400" />
+              <span className="text-[9px] sm:text-[10px] font-bold leading-tight truncate w-full text-center">
+                {isTelugu ? 'సేల్స్ & సర్వీస్' : 'Services'}
+              </span>
+            </button>
+
+            {/* 3. Booking */}
+            <button
+              onClick={() => {
+                onNavigate('service-booking');
+                scrollToTop(false);
+              }}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 text-slate-200 hover:text-white border border-slate-700/80 transition-all active:scale-95 cursor-pointer"
+              title="Book Service"
+            >
+              <CalendarCheck className="w-4 h-4 mb-1 text-sky-400" />
+              <span className="text-[9.5px] sm:text-[10.5px] font-bold leading-tight truncate w-full text-center">
+                {isTelugu ? 'బుకింగ్' : 'Booking'}
+              </span>
+            </button>
+
+            {/* 4. Install App */}
+            <button
+              onClick={() => {
+                if (onOpenInstallModal) {
+                  onOpenInstallModal();
+                }
+              }}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-cyan-950 text-cyan-300 border border-cyan-700/70 shadow-xs transition-all active:scale-95 cursor-pointer"
+              title="Install App"
+            >
+              <Download className="w-4 h-4 mb-1 text-cyan-400 animate-bounce" />
+              <span className="text-[9px] sm:text-[10px] font-bold leading-tight truncate w-full text-center text-cyan-300">
+                {isTelugu ? 'ఇన్‌స్టాల్' : 'Install App'}
+              </span>
+            </button>
+
+            {/* 5. WhatsApp Booking */}
+            <a
+              href={getDirectWhatsAppBookingUrl(isTelugu)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-emerald-950 text-emerald-300 border border-emerald-700/70 shadow-xs transition-all active:scale-95"
+              title="WhatsApp Booking"
+            >
+              <MessageCircle className="w-4 h-4 mb-1 fill-emerald-400 text-emerald-950" />
+              <span className="text-[9px] sm:text-[10px] font-bold leading-tight truncate w-full text-center text-emerald-300">
+                {isTelugu ? 'వాట్సాప్' : 'WhatsApp'}
+              </span>
+            </a>
           </div>
         </div>
       </section>

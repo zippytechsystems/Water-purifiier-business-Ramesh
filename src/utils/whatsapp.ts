@@ -132,6 +132,25 @@ Please share relevant details and callback.`;
 }
 
 /**
+ * Direct WhatsApp link for quick mobile WhatsApp Booking button
+ */
+export function getDirectWhatsAppBookingUrl(isTelugu: boolean = false): string {
+  const greeting = isTelugu 
+    ? `నమస్తే ప్రియాస్ ఆక్వాఫ్రెష్ (లాస్య వాటర్ సేల్స్ & సర్వీసెస్),` 
+    : `Hello Priya's AquaFresh (Lasya Water Purifier Sales & Services),`;
+  
+  const text = isTelugu 
+    ? `నేను వాటర్ ప్యూరిఫైయర్ సేల్స్ / సర్వీస్ బుకింగ్ కోసం సంప్రదిస్తున్నాను. దయచేసి వివరాలు తెలియజేయగలరు.`
+    : `I would like to book a water purifier service or purchase a new purifier. Please share details and confirm appointment.`;
+
+  const message = `${greeting}
+${text}
+📍 Location: Raghunathpally / Jangaon Area`;
+
+  return formatWhatsAppUrl(message);
+}
+
+/**
  * Direct General WhatsApp Inquiry
  */
 export function getGeneralWhatsAppUrl(isTelugu: boolean = false): string {
@@ -141,3 +160,4 @@ export function getGeneralWhatsAppUrl(isTelugu: boolean = false): string {
 
   return formatWhatsAppUrl(message);
 }
+

@@ -66,7 +66,8 @@ export function AppContent() {
         {currentPage === 'home' && (
           <HomePage 
             onNavigate={navigateTo} 
-            onSelectService={(srv) => setSelectedService(srv)} 
+            onSelectService={(srv) => setSelectedService(srv)}
+            onOpenInstallModal={() => setIsInstallModalOpen(true)}
           />
         )}
 

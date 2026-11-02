@@ -209,3 +209,18 @@ html.lenis body {
 .animate-pulse-slow {
   animation: rippleWave 3s ease-in-out infinite;
 }
+
+/* Hero Carousel Progress Bar Animation */
+@keyframes heroProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-hero-progress {
+  animation: heroProgress 4.5s linear infinite;
+}
+
