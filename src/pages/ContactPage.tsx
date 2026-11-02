@@ -62,6 +62,19 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       isTelugu
     );
 
+    // Persist to Hostinger MySQL Database API asynchronously
+    fetch('/api/enquiries.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name: form.name.trim(),
+        mobile_number: clean,
+        village_town: form.villageTown.trim(),
+        product_or_service_interest: form.interest,
+        message: form.message.trim()
+      })
+    }).catch(() => {});
+
     setSubmitted(true);
     setError('');
 

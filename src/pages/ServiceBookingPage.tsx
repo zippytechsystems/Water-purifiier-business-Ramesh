@@ -140,6 +140,31 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
 
       setConfirmedBooking(newBooking);
 
+      // Persist to Hostinger MySQL Database API asynchronously
+      fetch('/api/bookings.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          booking_reference: newBooking.reference,
+          customer_name: newBooking.customerName,
+          mobile_number: newBooking.mobileNumber,
+          address: newBooking.address,
+          village_town: newBooking.villageTown,
+          service_category: newBooking.serviceCategory,
+          product_type: newBooking.productType,
+          problem_description: newBooking.problemDescription,
+          preferred_date: newBooking.preferredDate,
+          preferred_time: newBooking.preferredTime
+        })
+      }).catch(() => {});
+
+      // Persist to localStorage for offline access
+      try {
+        const stored = localStorage.getItem('aquafresh_local_bookings');
+        const list = stored ? JSON.parse(stored) : [];
+        localStorage.setItem('aquafresh_local_bookings', JSON.stringify([newBooking, ...list]));
+      } catch {}
+
       // Open WhatsApp directly with pre-filled message
       const whatsappUrl = getBookingWhatsAppUrl(newBooking, isTelugu);
       window.open(whatsappUrl, '_blank');

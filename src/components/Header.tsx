@@ -11,15 +11,18 @@ import {
   ShieldCheck, 
   Clock, 
   MapPin, 
-  Globe
+  Globe,
+  Download,
+  Star
 } from 'lucide-react';
 
 interface HeaderProps {
   currentPage: PageRoute;
   onNavigate: (page: PageRoute) => void;
+  onOpenInstallModal?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
+export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenInstallModal }) => {
   const { isTelugu, toggleLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -41,6 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
     { labelEn: 'Book Service', labelTe: 'సర్వీస్ బుకింగ్', page: 'service-booking' },
     { labelEn: 'Spare Parts', labelTe: 'స్పేర్ పార్ట్స్', page: 'spare-parts' },
     { labelEn: 'Gallery', labelTe: 'గ్యాలరీ', page: 'gallery' },
+    { labelEn: 'Reviews', labelTe: 'రివ్యూలు', page: 'reviews' },
     { labelEn: 'Contact', labelTe: 'సంప్రదించండి', page: 'contact' },
   ];
 
@@ -73,6 +77,18 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           </div>
 
           <div className="flex items-center gap-3 ml-auto">
+            {/* Install App Button in Top Bar */}
+            {onOpenInstallModal && (
+              <button
+                onClick={onOpenInstallModal}
+                className="flex items-center gap-1 px-2.5 py-1 rounded bg-cyan-950 hover:bg-cyan-900 text-cyan-300 transition-colors text-xs font-semibold cursor-pointer border border-cyan-800/80 shadow-xs"
+                title="Install App"
+              >
+                <Download className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{isTelugu ? 'యాప్ ఇన్‌స్టాల్' : 'Install App'}</span>
+              </button>
+            )}
+
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
@@ -142,13 +158,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                 <button
                   key={link.page}
                   onClick={() => handleNavClick(link.page)}
-                  className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
+                  className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer flex items-center gap-1 ${
                     isActive
                       ? 'text-cyan-700 bg-cyan-50 font-bold shadow-xs'
                       : 'text-slate-700 hover:text-cyan-600 hover:bg-slate-100/70'
                   }`}
                 >
-                  {isTelugu ? link.labelTe : link.labelEn}
+                  {link.page === 'reviews' && <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />}
+                  <span>{isTelugu ? link.labelTe : link.labelEn}</span>
                 </button>
               );
             })}
@@ -156,6 +173,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
           {/* Right Action Buttons */}
           <div className="hidden sm:flex items-center gap-2.5">
+            {/* Install App Quick CTA */}
+            {onOpenInstallModal && (
+              <button
+                onClick={onOpenInstallModal}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-50 text-cyan-800 hover:bg-cyan-100 border border-cyan-200 shadow-xs transition-all cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5 text-cyan-600" />
+                <span>{t('Install App', 'ఇన్‌స్టాల్')}</span>
+              </button>
+            )}
+
             {/* Book Service Quick CTA */}
             <button
               onClick={() => handleNavClick('service-booking')}
@@ -178,6 +206,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
           {/* Mobile Menu Button */}
           <div className="flex xl:hidden items-center gap-2">
+            {onOpenInstallModal && (
+              <button
+                onClick={onOpenInstallModal}
+                className="p-2 rounded-lg bg-cyan-100 text-cyan-800 sm:hidden"
+                title="Install App"
+                aria-label="Install App"
+              >
+                <Download className="w-4 h-4" />
+              </button>
+            )}
+
             <a
               href={getGeneralWhatsAppUrl(isTelugu)}
               target="_blank"
@@ -214,7 +253,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                         : 'text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    <span>{isTelugu ? link.labelTe : link.labelEn}</span>
+                    <span className="flex items-center gap-2">
+                      {link.page === 'reviews' && <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />}
+                      <span>{isTelugu ? link.labelTe : link.labelEn}</span>
+                    </span>
                     {isActive && <span className="w-2 h-2 rounded-full bg-cyan-600"></span>}
                   </button>
                 );
@@ -222,6 +264,19 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             </div>
 
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
+              {onOpenInstallModal && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenInstallModal();
+                  }}
+                  className="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-center font-bold text-sm shadow-md flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>{t('Install Mobile App', 'మొబైల్ యాప్ ఇన్‌స్టాల్ చేసుకోండి')}</span>
+                </button>
+              )}
+
               <button
                 onClick={() => handleNavClick('service-booking')}
                 className="w-full py-3 rounded-xl bg-slate-900 text-white text-center font-bold text-sm shadow-md"

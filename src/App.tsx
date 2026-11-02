@@ -4,6 +4,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
+import { InstallAppModal } from './components/InstallAppModal';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { WaterPurifiersPage } from './pages/WaterPurifiersPage';
@@ -12,21 +13,23 @@ import { ServicesPage } from './pages/ServicesPage';
 import { ServiceBookingPage } from './pages/ServiceBookingPage';
 import { SparePartsPage } from './pages/SparePartsPage';
 import { GalleryPage } from './pages/GalleryPage';
+import { ReviewsPage } from './pages/ReviewsPage';
 import { ContactPage } from './pages/ContactPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 
+const validPages: PageRoute[] = [
+  'home', 'about', 'water-purifiers', 'appliances', 'services', 
+  'service-booking', 'spare-parts', 'gallery', 'reviews', 'contact', 'privacy'
+];
+
 export function AppContent() {
   const [currentPage, setCurrentPage] = useState<PageRoute>(() => {
-    // Check URL hash for direct links or fallback to home
     const hash = window.location.hash.replace('#', '') as PageRoute;
-    const validPages: PageRoute[] = [
-      'home', 'about', 'water-purifiers', 'appliances', 'services', 
-      'service-booking', 'spare-parts', 'gallery', 'contact', 'privacy'
-    ];
     return validPages.includes(hash) ? hash : 'home';
   });
 
   const [selectedService, setSelectedService] = useState<string>('General Service');
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(false);
 
   const navigateTo = (page: PageRoute) => {
     setCurrentPage(page);
@@ -37,10 +40,6 @@ export function AppContent() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '') as PageRoute;
-      const validPages: PageRoute[] = [
-        'home', 'about', 'water-purifiers', 'appliances', 'services', 
-        'service-booking', 'spare-parts', 'gallery', 'contact', 'privacy'
-      ];
       if (validPages.includes(hash)) {
         setCurrentPage(hash);
       }
@@ -53,7 +52,11 @@ export function AppContent() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-cyan-500 selection:text-white">
       {/* Navigation Header */}
-      <Header currentPage={currentPage} onNavigate={navigateTo} />
+      <Header 
+        currentPage={currentPage} 
+        onNavigate={navigateTo} 
+        onOpenInstallModal={() => setIsInstallModalOpen(true)}
+      />
 
       {/* Main Page Content */}
       <main className="flex-1">
@@ -101,6 +104,10 @@ export function AppContent() {
           <GalleryPage onNavigate={navigateTo} />
         )}
 
+        {currentPage === 'reviews' && (
+          <ReviewsPage onNavigate={navigateTo} />
+        )}
+
         {currentPage === 'contact' && (
           <ContactPage onNavigate={navigateTo} />
         )}
@@ -115,6 +122,12 @@ export function AppContent() {
 
       {/* Floating Call & WhatsApp Buttons */}
       <FloatingActions onNavigate={navigateTo} />
+
+      {/* Cross-Device PWA Install Modal */}
+      <InstallAppModal 
+        isOpen={isInstallModalOpen} 
+        onClose={() => setIsInstallModalOpen(false)} 
+      />
     </div>
   );
 }

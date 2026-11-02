@@ -1,4 +1,4 @@
-import { Product, ServiceItem, SparePartItem, GalleryItem } from '../types';
+import { Product, ServiceItem, SparePartItem, GalleryItem, CustomerReview } from '../types';
 
 export const BUSINESS_INFO = {
   brandName: "Priya's AquaFresh",
@@ -504,12 +504,12 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   {
     id: "g2",
-    titleEn: "Pure Water Purity Demonstration",
-    titleTe: "స్వచ్ఛమైన తాగునీటి ప్రదర్శన",
+    titleEn: "Lasya Multi-Stage RO Purifiers",
+    titleTe: "లాస్య మల్టీ-స్టేజ్ RO ప్యూరిఫైయర్లు",
     category: "purity",
-    imageUrl: "/images/gallery/frame-01-host-water.png",
-    captionEn: "Pure, crystal-clear drinking water for your family's health.",
-    captionTe: "మీ కుటుంబ ఆరోగ్యం కోసం స్వచ్ఛమైన, పరిశుభ్రమైన నీరు."
+    imageUrl: "/images/gallery/frame-06-lasya-purifiers.png",
+    captionEn: "Premium multi-stage RO purifiers with copper and alkaline filtration technology.",
+    captionTe: "కాపర్ మరియు ఆల్కలైన్ ఫిల్ట్రేషన్ టెక్నాలజీతో కూడిన ప్రీమియం ప్యూరిఫైయర్లు."
   },
   {
     id: "g3",
@@ -564,6 +564,59 @@ export const GALLERY_DATA: GalleryItem[] = [
     imageUrl: "/images/gallery/frame-14-priya-aquafresh-card.png",
     captionEn: "Khilashapur Road, Raghunathpally, Jangaon District - Trusted local choice.",
     captionTe: "ఖిలాషాపూర్ రోడ్, రఘునాథపల్లి, జిల్లా జనగామ - నమ్మకమైన ఎంపిక."
+  }
+];
+
+export const REVIEWS_DATA: CustomerReview[] = [
+  {
+    id: "r1",
+    customerName: "Srinivas Rao",
+    villageTown: "Raghunathpally",
+    rating: 5,
+    serviceAvailed: "Domestic RO Purifier Installation",
+    comment: "Very prompt service by Ramesh garu. He installed our water purifier neatly and explained how the mineral filter works. Highly recommended!",
+    createdAt: "2026-10-28",
+    isVerified: true
+  },
+  {
+    id: "r2",
+    customerName: "K. Madhavi",
+    villageTown: "Jangaon",
+    rating: 5,
+    serviceAvailed: "Water Purifier Filter Replacement",
+    comment: "Original filters and membrane replaced on the same day after calling. Water taste is crystal clean and TDS is perfectly balanced.",
+    createdAt: "2026-10-29",
+    isVerified: true
+  },
+  {
+    id: "r3",
+    customerName: "Rajesh Reddy",
+    villageTown: "Khilashapur",
+    rating: 5,
+    serviceAvailed: "RO Purifier Repair & Servicing",
+    comment: "Had a water leakage issue in our purifier. Technician arrived in 2 hours and fixed the fitting. Reasonable and honest pricing.",
+    createdAt: "2026-10-31",
+    isVerified: true
+  },
+  {
+    id: "r4",
+    customerName: "Venkateshwarlu",
+    villageTown: "Ashwaraopally",
+    rating: 5,
+    serviceAvailed: "Commercial RO Plant Setup",
+    comment: "Excellent commercial purifier setup for our shop. Running smoothly with 1-year guarantee and prompt support on WhatsApp.",
+    createdAt: "2026-11-01",
+    isVerified: true
+  },
+  {
+    id: "r5",
+    customerName: "G. Anitha",
+    villageTown: "Nidigonda",
+    rating: 5,
+    serviceAvailed: "Alkaline RO Purifier Purchase",
+    comment: "Bought Priya's AquaFresh Copper Alkaline model. Ramesh garu gave demo and quick doorstep installation. Very polite and dependable.",
+    createdAt: "2026-11-02",
+    isVerified: true
   }
 ];
 

@@ -9,8 +9,20 @@ export type PageRoute =
   | 'service-booking'
   | 'spare-parts'
   | 'gallery'
+  | 'reviews'
   | 'contact'
   | 'privacy';
+
+export interface CustomerReview {
+  id: string | number;
+  customerName: string;
+  villageTown: string;
+  rating: number;
+  serviceAvailed: string;
+  comment: string;
+  createdAt: string;
+  isVerified?: boolean;
+}
 
 export type ServiceCategory = 
   | 'New Installation'

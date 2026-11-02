@@ -1,0 +1,33 @@
+{
+  "name": "Priya's AquaFresh – Lasya Water Purifier",
+  "short_name": "AquaFresh",
+  "description": "Doorstep Water Purifier Sales, Installation, Service & Repair in Raghunathpally, Jangaon, Telangana.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#06b6d4",
+  "scope": "/",
+  "categories": ["business", "shopping", "utilities"],
+  "icons": [
+    {
+      "src": "/images/brand/business-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/brand/business-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

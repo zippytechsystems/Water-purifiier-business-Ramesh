@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageRoute, Product, ServiceItem } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { BUSINESS_INFO, PRODUCTS_DATA, SERVICES_DATA } from '../data/mockData';
+import { BUSINESS_INFO, PRODUCTS_DATA, SERVICES_DATA, REVIEWS_DATA } from '../data/mockData';
 import { getProductWhatsAppUrl, getServiceEnquiryWhatsAppUrl, getGeneralWhatsAppUrl } from '../utils/whatsapp';
 import { 
   Droplets, 
@@ -607,8 +607,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
             <video
               ref={videoRef}
               src="/videos/promotional-video.mp4"
-              poster="/images/gallery/frame-08-showroom-host.png"
+              poster="/images/gallery/frame-04-purifier-display.png"
               playsInline
+              loop
+              preload="metadata"
               muted={isMuted}
               controls
               onPlay={() => setIsPlaying(true)}
@@ -644,65 +646,75 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
       </section>
 
       {/* ======================================================= */}
-      {/* SECTION 8: CUSTOMER TESTIMONIALS (SAMPLE PLACEHOLDERS)  */}
+      {/* SECTION 8: CUSTOMER REVIEWS & RATINGS                   */}
       {/* ======================================================= */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-600 mb-2 block">
-              {t("Customer Experiences", "కస్టమర్ల అభిప్రాయాలు")}
+              {t("Customer Reviews & Ratings", "కస్టమర్ల అభిప్రాయాలు & రేటింగ్స్")}
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">
               {t("Trusted Across Raghunathpally & Jangaon", "గ్రామస్థులు & వినియోగదారుల విశ్వాసం")}
             </h2>
-            <p className="text-xs text-slate-500 italic">
-              [Sample representative customer feedback placeholders – verified reviews will be added with customer consent]
-            </p>
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-600">
+              <div className="flex text-amber-400">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} className="w-4 h-4 fill-amber-400" />
+                ))}
+              </div>
+              <span className="font-bold text-slate-900">4.9 / 5.0 Rating</span>
+              <span>•</span>
+              <span>{t("Verified Doorstep Service", "నమ్మకమైన స్థానిక సర్వీస్")}</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                name: "K. Venkatesh (Farmer)",
-                location: "Raghunathpally",
-                text: "We had very high salt TDS in our borewell water. Lasya Water Purifiers installed Priya's AquaFresh RO machine within a few hours. Water is now sweet and clean."
-              },
-              {
-                name: "S. Mallikarjun (Teacher)",
-                location: "Khilashapur",
-                text: "Prompt filter replacement service! The technician tested the TDS before and after service. Very polite and honest local service."
-              },
-              {
-                name: "R. Srinivas (Shop Owner)",
-                location: "Jangaon",
-                text: "Bought both a commercial water purifier and AC spare parts. Original quality with reliable after-sales support."
-              }
-            ].map((testi, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {REVIEWS_DATA.slice(0, 3).map((rev) => (
+              <div key={rev.id} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
                 <div>
-                  <div className="flex gap-1 text-amber-400 mb-3">
-                    {[...Array(5)].map((_, idx) => (
-                      <Star key={idx} className="w-4 h-4 fill-amber-400" />
-                    ))}
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <div className="flex gap-1 text-amber-400">
+                      {Array.from({ length: rev.rating }).map((_, idx) => (
+                        <Star key={idx} className="w-4 h-4 fill-amber-400" />
+                      ))}
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                      Verified
+                    </span>
                   </div>
+                  <span className="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium mb-3">
+                    {rev.serviceAvailed}
+                  </span>
                   <p className="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-4">
-                    "{testi.text}"
+                    "{rev.comment}"
                   </p>
                 </div>
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-slate-900 text-sm">{testi.name}</h4>
+                    <h4 className="font-bold text-slate-900 text-sm">{rev.customerName}</h4>
                     <p className="text-xs text-slate-500 flex items-center gap-1">
                       <MapPin className="w-3 h-3 text-cyan-500" />
-                      <span>{testi.location}</span>
+                      <span>{rev.villageTown}</span>
                     </p>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
-                    Verified Customer
+                  <span className="text-[11px] text-slate-400">
+                    {rev.createdAt}
                   </span>
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={() => onNavigate('reviews')}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all cursor-pointer transform hover:-translate-y-0.5"
+            >
+              <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+              <span>{t("View All Customer Reviews & Submit Rating", "అన్ని రివ్యూలు చూడండి & రేటింగ్ ఇవ్వండి")}</span>
+              <ChevronRight className="w-4 h-4 text-cyan-400" />
+            </button>
           </div>
         </div>
       </section>

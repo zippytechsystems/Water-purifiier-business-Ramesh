@@ -151,6 +151,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button 
+                  onClick={() => handleNav('reviews')} 
+                  className="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer text-slate-400 hover:text-slate-100 font-semibold text-amber-300 hover:text-amber-200"
+                >
+                  <ChevronRight className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{t('Customer Reviews & Ratings', 'కస్టమర్ రివ్యూలు & రేటింగ్స్')}</span>
+                </button>
+              </li>
+              <li>
+                <button 
                   onClick={() => handleNav('privacy')} 
                   className="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer text-slate-500 hover:text-slate-300 text-xs pt-1"
                 >

@@ -163,7 +163,23 @@ CREATE TABLE IF NOT EXISTS `spare_parts` (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- 8. INITIAL SEED DATA
+-- 8. CUSTOMER REVIEWS & RATINGS
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `customer_reviews` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `customer_name` VARCHAR(100) NOT NULL,
+  `village_town` VARCHAR(100) NOT NULL,
+  `rating` TINYINT UNSIGNED NOT NULL DEFAULT 5,
+  `service_availed` VARCHAR(100) NOT NULL,
+  `comment` TEXT NOT NULL,
+  `is_approved` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_rating` (`rating`),
+  INDEX `idx_approved` (`is_approved`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- 9. INITIAL SEED DATA
 -- ---------------------------------------------------------------------
 
 -- Seed Admin (Default initial demo credentials)
@@ -180,8 +196,15 @@ INSERT INTO `product_categories` (`id`, `name_en`, `name_te`, `slug`, `parent_gr
 (5, 'AC Spare Parts', 'AC స్పేర్ పార్ట్స్', 'ac-spare-parts', 'home_appliances', 'Compressors, copper piping, fan motors, capacitors and AC gas.', 'అన్ని రకాల AC స్పేర్ పార్ట్స్ లభించును.', '/images/products/ac-spare-parts/category-ac-spare-parts.png', 5)
 ON DUPLICATE KEY UPDATE `name_en`=VALUES(`name_en`);
 
+-- Seed Customer Reviews
+INSERT INTO `customer_reviews` (`customer_name`, `village_town`, `rating`, `service_availed`, `comment`, `is_approved`) VALUES
+('Srinivas Rao', 'Raghunathpally', 5, 'Domestic RO Purifier Installation', 'Very prompt service by Ramesh garu. He installed our water purifier neatly and explained how the mineral filter works. Highly recommended!', 1),
+('K. Madhavi', 'Jangaon', 5, 'Water Purifier Filter Replacement', 'Original filters and membrane replaced on the same day after calling. Water taste is excellent and clean.', 1),
+('Rajesh Reddy', 'Khilashapur', 5, 'RO Purifier Repair & Servicing', 'Had a water leakage problem in our RO plant. Technician arrived in 2 hours and fixed the fitting. Honest pricing.', 1),
+('Venkateshwarlu', 'Ashwaraopally', 5, 'Commercial RO Plant Setup', 'Excellent commercial purifier setup for our shop. Running smoothly with 1 year guarantee.', 1);
+
 -- ---------------------------------------------------------------------
--- 9. USEFUL REPORTING VIEW FOR ADMIN DASHBOARD
+-- 10. USEFUL REPORTING VIEW FOR ADMIN DASHBOARD
 -- ---------------------------------------------------------------------
 CREATE OR REPLACE VIEW `v_dashboard_kpis` AS
 SELECT
