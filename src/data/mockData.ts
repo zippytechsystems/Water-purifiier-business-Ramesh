@@ -1,9 +1,9 @@
-import { Product, ServiceItem, SparePartItem, GalleryItem, CustomerReview } from '../types';
+import { Product, ServiceItem, SparePartItem, GalleryItem, CustomerReview, ServiceArea } from '../types';
 
 export const BUSINESS_INFO = {
-  brandName: "Priya's AquaFresh",
+  brandName: "PURE – Priya's AquaFresh",
   businessName: "Lasya Water Purifier Sales & Services",
-  brandNameTe: "ప్రియాస్ ఆక్వాఫ్రెష్",
+  brandNameTe: "ప్యూర్ (PURE) – లాస్య వాటర్ ప్యూరిఫైయర్స్",
   businessNameTe: "లాస్య వాటర్ ప్యూరిఫైయర్ సేల్స్ & సర్వీసెస్",
   taglineEn: "Pure Water. Healthy Life.",
   taglineTe: "స్వచ్ఛమైన నీటికి నమ్మకమైన ఎంపిక",
@@ -619,5 +619,139 @@ export const REVIEWS_DATA: CustomerReview[] = [
     isVerified: true
   }
 ];
+
+export const SERVICE_AREAS_DATA: ServiceArea[] = [
+  {
+    id: "sa1",
+    nameEn: "Raghunathpally (Headquarters)",
+    nameTe: "రఘునాథపల్లి (ప్రధాన కేంద్రం)",
+    category: "primary",
+    pincode: "506244",
+    distanceKm: "0 km (Local Shop)",
+    highlightEn: "Instant 30-min technician dispatch, shop showroom, full spare parts stock.",
+    highlightTe: "30 నిమిషాల్లో టెక్నీషియన్ సర్వీస్, షోరూమ్ & ఒరిజినల్ స్పేర్స్ లభ్యం."
+  },
+  {
+    id: "sa2",
+    nameEn: "Khilashapur Road & Khilashapur",
+    nameTe: "ఖిలాషాపూర్ రోడ్ & ఖిలాషాపూర్",
+    category: "primary",
+    pincode: "506244",
+    distanceKm: "1 - 3 km",
+    highlightEn: "Direct highway service corridor, urgent breakdown calls, new machine delivery.",
+    highlightTe: "హైవే సర్వీస్ కారిడార్, తక్షణ రిపేర్ & హోమ్ డెలివరీ సదుపాయం."
+  },
+  {
+    id: "sa3",
+    nameEn: "Jangaon Town & District HQ",
+    nameTe: "జనగామ టౌన్ & జిల్లా హెడ్‌క్వార్టర్స్",
+    category: "hub",
+    pincode: "506167",
+    distanceKm: "12 km",
+    highlightEn: "Nehru Park, Siddipet Road, Suryapet Road, Hyderabad Highway residential & commercial RO setups.",
+    highlightTe: "నెహ్రూ పార్క్, సిద్దిపేట రోడ్, సూర్యాపేట రోడ్ మరియు వాణిజ్య RO ప్లాంట్ల సర్వీస్."
+  },
+  {
+    id: "sa4",
+    nameEn: "Kanchanpally",
+    nameTe: "కంచనపల్లి",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "4 km",
+    highlightEn: "Doorstep RO filter changes, TDS testing & routine preventative maintenance.",
+    highlightTe: "ఇంటి వద్దకే ఫిల్టర్ మార్పిడి, TDS టెస్టింగ్ మరియు రెగ్యులర్ సర్వీస్."
+  },
+  {
+    id: "sa5",
+    nameEn: "Madharam",
+    nameTe: "మాదారం",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "5 km",
+    highlightEn: "Domestic purifier installation, borewell water TDS balance, mineral filter addition.",
+    highlightTe: "బోరుబావి నీటికి తగిన TDS కంట్రోల్ & మినరల్ ఫిల్టర్ ఇన్స్టాలేషన్."
+  },
+  {
+    id: "sa6",
+    nameEn: "Ashwaraopally",
+    nameTe: "అశ్వరావుపల్లి",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "6 km",
+    highlightEn: "Fast motor pump repair, SMPS adapter replacement, membrane descaling.",
+    highlightTe: "మోటార్ పంప్ రిపేర్, SMPS అడాప్టర్ మార్పిడి మరియు మెంబ్రేన్ క్లీనింగ్."
+  },
+  {
+    id: "sa7",
+    nameEn: "Gabbeta",
+    nameTe: "గబ్బెట",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "7 km",
+    highlightEn: "Doorstep technician visits, pre-filter candle supplies, water leakage fixing.",
+    highlightTe: "డోర్‌స్టెప్ టెక్నీషియన్ సర్వీస్, ప్రీ-ఫిల్టర్ క్యాండిల్స్ & లీకేజీ రిపేర్."
+  },
+  {
+    id: "sa8",
+    nameEn: "Veldi",
+    nameTe: "వెల్ది",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "8 km",
+    highlightEn: "Alkaline & Copper RO machine demos, free water quality analysis.",
+    highlightTe: "ఆల్కలైన్ & కాపర్ RO డెమో, ఉచిత వాటర్ క్వాలిటీ టెస్ట్."
+  },
+  {
+    id: "sa9",
+    nameEn: "Ibrahimbad",
+    nameTe: "ఇబ్రహీంబాద్",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "9 km",
+    highlightEn: "Agricultural borewell high TDS reduction, customized multi-stage filtration.",
+    highlightTe: "హై TDS నీటిని స్వచ్ఛమైన తాగునీరుగా మార్చే మల్టీ-స్టేజ్ ప్యూరిఫికేషన్."
+  },
+  {
+    id: "sa10",
+    nameEn: "Kaloor & Kodavatoor",
+    nameTe: "కాలూర్ & కొడవటూరు",
+    category: "village",
+    pincode: "506244",
+    distanceKm: "10 km",
+    highlightEn: "Prompt customer support on WhatsApp, genuine spare parts with warranty.",
+    highlightTe: "వాట్సాప్ ద్వారా తక్షణ బుకింగ్, వారంటీతో కూడిన ఒరిజినల్ స్పేర్స్."
+  },
+  {
+    id: "sa11",
+    nameEn: "Station Ghanpur",
+    nameTe: "స్టేషన్ ఘన్‌పూర్",
+    category: "mandal",
+    pincode: "506144",
+    distanceKm: "14 km",
+    highlightEn: "Commercial purifiers for colleges, schools, clinics, and domestic installations.",
+    highlightTe: "స్కూల్స్, కాలేజీలు, హాస్పిటల్స్ మరియు గృహ అవసరాలకు సరిపడే ప్యూరిఫైయర్లు."
+  },
+  {
+    id: "sa12",
+    nameEn: "Zaffergadh & Lingala Ghanpur",
+    nameTe: "జాఫర్‌గఢ్ & లింగాల ఘన్‌పూర్",
+    category: "mandal",
+    pincode: "506316",
+    distanceKm: "16 km",
+    highlightEn: "Scheduled technician service runs, whole-house filtration consultancy.",
+    highlightTe: "వీక్లీ సర్వీస్ విజిట్స్, ప్యూరిఫైయర్ ఇన్స్టాలేషన్ & స్పేర్ పార్ట్స్ సదుపాయం."
+  },
+  {
+    id: "sa13",
+    nameEn: "Bachannapet & Devaruppula",
+    nameTe: "బచ్చన్నపేట & దేవరుప్పుల",
+    category: "mandal",
+    pincode: "506302",
+    distanceKm: "18 - 22 km",
+    highlightEn: "Delivery of new water purifiers, air coolers, AC spares with on-site setup.",
+    highlightTe: "కొత్త వాటర్ ప్యూరిఫైయర్లు, ఎయిర్ కూలర్లు మరియు AC స్పేర్స్ హోమ్ డెలివరీ."
+  }
+];
+
 
 

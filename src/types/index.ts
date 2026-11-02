@@ -108,3 +108,15 @@ export interface GalleryItem {
   captionEn: string;
   captionTe: string;
 }
+
+export interface ServiceArea {
+  id: string;
+  nameEn: string;
+  nameTe: string;
+  category: 'primary' | 'hub' | 'village' | 'mandal';
+  pincode: string;
+  distanceKm: string;
+  highlightEn: string;
+  highlightTe: string;
+}
+

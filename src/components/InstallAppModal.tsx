@@ -91,14 +91,17 @@ export const InstallAppModal: React.FC<InstallAppModalProps> = ({ isOpen, onClos
         <div className="flex items-center gap-3.5 mb-5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 to-blue-500 p-0.5 shadow-lg flex items-center justify-center">
             <img 
-              src="/images/brand/business-logo.png" 
-              alt="Priya's AquaFresh App Icon" 
+              src="/images/brand/pure-logo.svg" 
+              alt="PURE AquaFresh App Icon" 
               className="w-full h-full object-cover rounded-[14px]"
+              onError={(e) => {
+                e.currentTarget.src = '/images/brand/business-logo.png';
+              }}
             />
           </div>
           <div>
             <h3 className="font-extrabold text-white text-base sm:text-lg">
-              {t("Install Priya's AquaFresh App", "ప్రియాస్ ఆక్వాఫ్రెష్ యాప్ ఇన్‌స్టాల్")}
+              {t("Install PURE AquaFresh App", "PURE ఆక్వాఫ్రెష్ యాప్ ఇన్‌స్టాల్")}
             </h3>
             <p className="text-xs text-cyan-400 font-medium">
               {t("Instant 1-Tap Access on Mobile & PC", "మొబైల్ & కంప్యూటర్ లో వేగవంతమైన యాక్సెస్")}

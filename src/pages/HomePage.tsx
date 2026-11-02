@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageRoute, Product, ServiceItem } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { BUSINESS_INFO, PRODUCTS_DATA, SERVICES_DATA, REVIEWS_DATA } from '../data/mockData';
+import { BUSINESS_INFO, PRODUCTS_DATA, SERVICES_DATA, REVIEWS_DATA, SERVICE_AREAS_DATA } from '../data/mockData';
 import { getProductWhatsAppUrl, getServiceEnquiryWhatsAppUrl, getGeneralWhatsAppUrl } from '../utils/whatsapp';
 import { 
   Droplets, 
@@ -23,7 +23,9 @@ import {
   ArrowRight,
   Filter,
   Layers,
-  HeartHandshake
+  HeartHandshake,
+  Navigation,
+  Clock
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -33,6 +35,9 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService }) => {
   const { isTelugu, t } = useLanguage();
+
+  // Service Areas filter state
+  const [areaFilter, setAreaFilter] = useState<'all' | 'primary' | 'hub' | 'village'>('all');
 
   // Video player state
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -83,7 +88,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
               {/* Trust Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-semibold shadow-inner backdrop-blur-md">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>{t("Priya's AquaFresh – Authorized Sales & Services", "ప్రియాస్ ఆక్వాఫ్రెష్ – లాస్య వాటర్ ప్యూరిఫైయర్స్")}</span>
+                <span>{t("PURE (Priya's AquaFresh) – #1 Water Purifier Sales & Services", "ప్యూర్ (PURE) – లాస్య వాటర్ ప్యూరిఫైయర్ సేల్స్ & సర్వీసెస్ | రఘునాథపల్లి")}</span>
               </div>
 
               {/* Main Headline */}
@@ -720,7 +725,151 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
       </section>
 
       {/* ======================================================= */}
-      {/* SECTION 9: CTA BANNER SECTION                           */}
+      {/* SECTION 9: LOCAL SERVICE AREAS & COVERAGE (SEO RANKING) */}
+      {/* ======================================================= */}
+      <section id="service-areas" className="py-20 bg-slate-900 text-white relative overflow-hidden">
+        {/* Subtle Background Glows */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-bold tracking-wide">
+              <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+              <span>{t("Local Coverage & Doorstep Service Hub", "స్థానిక సర్వీస్ నెట్‌వర్క్")}</span>
+            </div>
+            
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              {t(
+                "#1 Water Purifier Sales & RO Service in Raghunathpally & Jangaon",
+                "రఘునాథపల్లి, జనగామ & చుట్టుపక్కల గ్రామాల నెం.1 సర్వీస్ నెట్‌వర్క్"
+              )}
+            </h2>
+            
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+              {t(
+                "Located on Khilashapur Road, Raghunathpally (506244), PURE AquaFresh provides fast 30-minute doorstep service, genuine filter replacements, and new machine delivery across all neighboring villages & mandals.",
+                "ఖిలాషాపూర్ రోడ్, రఘునాథపల్లి కేంద్రంగా జనగామ మరియు చుట్టుపక్కల గ్రామాల ప్రజలకు స్వచ్ఛమైన తాగునీటి కోసం వేగవంతమైన డోర్‌స్టెప్ వాటర్ ప్యూరిఫైయర్ సర్వీస్ అందిస్తున్నాము."
+              )}
+            </p>
+
+            {/* Area Category Filter Buttons */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
+              {[
+                { id: 'all', labelEn: 'All Service Locations', labelTe: 'అన్ని ప్రాంతాలు' },
+                { id: 'primary', labelEn: 'Raghunathpally & Highway', labelTe: 'రఘునాథపల్లి & ఖిలాషాపూర్ రోడ్' },
+                { id: 'hub', labelEn: 'Jangaon Town HQ', labelTe: 'జనగామ టౌన్' },
+                { id: 'village', labelEn: 'Surrounding Villages', labelTe: 'చుట్టుపక్కల గ్రామాలు' },
+              ].map((btn) => (
+                <button
+                  key={btn.id}
+                  onClick={() => setAreaFilter(btn.id as any)}
+                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                    areaFilter === btn.id
+                      ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20'
+                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700'
+                  }`}
+                >
+                  {isTelugu ? btn.labelTe : btn.labelEn}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Area Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+            {SERVICE_AREAS_DATA
+              .filter(area => {
+                if (areaFilter === 'all') return true;
+                if (areaFilter === 'primary') return area.category === 'primary';
+                if (areaFilter === 'hub') return area.category === 'hub';
+                if (areaFilter === 'village') return area.category === 'village' || area.category === 'mandal';
+                return true;
+              })
+              .map((area) => (
+                <div 
+                  key={area.id}
+                  className="p-5 rounded-2xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-500/50 shadow-lg hover:shadow-cyan-500/10 transition-all flex flex-col justify-between group"
+                >
+                  <div>
+                    {/* Top Row: Distance & Pincode Badge */}
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800/60 flex items-center gap-1">
+                        <Navigation className="w-3 h-3 text-cyan-400" />
+                        <span>{area.distanceKm}</span>
+                      </span>
+                      <span className="text-[10px] font-semibold text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-700">
+                        PIN: {area.pincode}
+                      </span>
+                    </div>
+
+                    {/* Area Title */}
+                    <h3 className="font-extrabold text-white text-base sm:text-lg mb-1 group-hover:text-cyan-300 transition-colors">
+                      {isTelugu ? area.nameTe : area.nameEn}
+                    </h3>
+                    
+                    <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                      {isTelugu ? area.highlightTe : area.highlightEn}
+                    </p>
+                  </div>
+
+                  {/* Actions: WhatsApp & Call */}
+                  <div className="pt-3 border-t border-slate-700/60 flex items-center gap-2">
+                    <a
+                      href={`https://wa.me/${BUSINESS_INFO.whatsapp}?text=Hello%20Ramesh%20garu,%20I%20am%20from%20${encodeURIComponent(area.nameEn)}.%20I%20need%20Water%20Purifier%20Service%20or%20New%20Machine.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                      <span>{t("Book in " + area.nameEn.split(' ')[0], area.nameTe.split(' ')[0] + " లో బుకింగ్")}</span>
+                    </a>
+
+                    <a
+                      href={`tel:${BUSINESS_INFO.phone}`}
+                      className="py-2 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold flex items-center justify-center transition-colors"
+                      title="Call Technician"
+                    >
+                      <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          {/* Guarantee & Search Keywords Banner */}
+          <div className="p-6 rounded-3xl bg-slate-950/80 border border-slate-800 text-center space-y-4">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-300">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <span>30-60 Minute Doorstep Response</span>
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-cyan-400" />
+                <span>100% Genuine Filters & Spares</span>
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-amber-400" />
+                <span>1 Year Guarantee on Purifiers</span>
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <span>Free TDS Water Health Audit</span>
+              </span>
+            </div>
+
+            <p className="text-[11px] sm:text-xs text-slate-500 max-w-4xl mx-auto leading-relaxed border-t border-slate-800/80 pt-3">
+              <strong>Serving Locations:</strong> Raghunathpally (506244), Khilashapur Road, Jangaon Town (506167), Kanchanpally, Madharam, Ashwaraopally, Gabbeta, Veldi, Ibrahimbad, Kaloor, Kodavatoor, Mundrai, Station Ghanpur (506144), Zaffergadh (506316), Lingala Ghanpur, Bachannapet (506302), Devaruppula, Tarigoppula, Telangana.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ======================================================= */}
+      {/* SECTION 10: CTA BANNER SECTION                          */}
       {/* ======================================================= */}
       <section className="py-16 bg-gradient-to-br from-cyan-600 via-blue-700 to-slate-900 text-white text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">

@@ -35,19 +35,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 1: Brand & Identity */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 flex items-center justify-center shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 flex items-center justify-center shadow-md shrink-0">
                 <img 
-                  src="/images/brand/business-logo.png" 
-                  alt="Priya's AquaFresh" 
-                  className="w-full h-full object-contain bg-white rounded-lg p-1"
+                  src="/images/brand/pure-logo.svg" 
+                  alt="PURE Water Purifiers" 
+                  className="w-full h-full object-cover rounded-[14px]"
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/brand/business-logo.png';
+                  }}
                 />
               </div>
               <div>
-                <h3 className="font-extrabold text-xl text-white tracking-tight">
-                  Priya's <span className="text-cyan-400">AquaFresh</span>
-                </h3>
-                <p className="text-xs text-slate-400 font-telugu">
-                  {isTelugu ? 'లాస్య వాటర్ సేల్స్ & సర్వీసెస్' : 'Lasya Water Purifier Sales & Services'}
+                <div className="flex items-center gap-2">
+                  <h3 className="font-black text-2xl text-white tracking-tight leading-none">
+                    <span className="text-cyan-400">PURE</span>
+                  </h3>
+                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-cyan-900/60 text-cyan-300 border border-cyan-700">
+                    AquaFresh
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 font-telugu mt-0.5">
+                  {isTelugu ? 'లాస్య వాటర్ సేల్స్ & సర్వీసెస్ | రఘునాథపల్లి' : "Priya's AquaFresh – Lasya Purifiers"}
                 </p>
               </div>
             </div>

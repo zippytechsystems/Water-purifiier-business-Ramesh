@@ -125,27 +125,27 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenI
             onClick={() => handleNavClick('home')}
             className="flex items-center gap-3 text-left focus:outline-none cursor-pointer group"
           >
-            <div className="relative w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-700 p-0.5 shadow-md flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+            <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-sky-600 to-blue-700 p-0.5 shadow-md flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105 shrink-0">
               <img 
-                src="/images/brand/business-logo.png" 
-                alt="Priya's AquaFresh Logo" 
-                className="w-full h-full object-contain bg-white rounded-lg p-1"
+                src="/images/brand/pure-logo.svg" 
+                alt="PURE Water Purifiers Logo" 
+                className="w-full h-full object-cover rounded-[14px]"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.src = '/images/brand/business-logo.png';
                 }}
               />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-lg sm:text-xl text-slate-900 tracking-tight leading-tight">
-                  Priya's <span className="text-cyan-600">AquaFresh</span>
+              <div className="flex items-center gap-2">
+                <span className="font-black text-2xl sm:text-3xl tracking-tight text-slate-900 leading-none">
+                  <span className="text-cyan-600 font-extrabold">PURE</span>
                 </span>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
-                  RO & Sales
+                <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-300">
+                  AquaFresh
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium font-telugu leading-tight">
-                {isTelugu ? 'లాస్య వాటర్ సేల్స్ & సర్వీసెస్' : 'Lasya Water Purifier Sales & Services'}
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium font-telugu leading-tight mt-0.5">
+                {isTelugu ? 'లాస్య వాటర్ సేల్స్ & సర్వీసెస్ | రఘునాథపల్లి' : "Priya's AquaFresh – Lasya Purifiers"}
               </p>
             </div>
           </button>

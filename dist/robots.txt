@@ -1,4 +1,16 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+
+User-agent: Googlebot
+Allow: /
+Allow: /images/
+Allow: /videos/
+
+User-agent: Googlebot-Image
+Allow: /images/
+
+User-agent: Bingbot
+Allow: /
 
 Sitemap: https://priyasaquafresh.com/sitemap.xml
