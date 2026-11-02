@@ -288,7 +288,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({ onNavigate }) => {
 
                   {/* Stars */}
                   <div className="flex items-center gap-0.5 text-amber-400">
-                    {Array.from({ length: rev.rating }).map((_, i) => (
+                    {Array.from({ length: Math.max(1, Math.min(5, Math.floor(rev.rating || 5))) }).map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-amber-400" />
                     ))}
                   </div>

@@ -13,13 +13,26 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('lwp_user_lang');
-    return (saved === 'te' || saved === 'en') ? saved : 'en';
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = localStorage.getItem('lwp_user_lang');
+        return (saved === 'te' || saved === 'en') ? saved : 'en';
+      }
+    } catch {
+      // Fallback for private browsing or restricted environments
+    }
+    return 'en';
   });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('lwp_user_lang', lang);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('lwp_user_lang', lang);
+      }
+    } catch {
+      // Ignored if storage full or restricted
+    }
   };
 
   const toggleLanguage = () => {

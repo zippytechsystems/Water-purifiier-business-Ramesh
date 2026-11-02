@@ -675,7 +675,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService 
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <div className="flex gap-1 text-amber-400">
-                      {Array.from({ length: rev.rating }).map((_, idx) => (
+                      {Array.from({ length: Math.max(1, Math.min(5, Math.floor(rev.rating || 5))) }).map((_, idx) => (
                         <Star key={idx} className="w-4 h-4 fill-amber-400" />
                       ))}
                     </div>

@@ -1,12 +1,12 @@
 # Priya's AquaFresh – Production Hostinger / cPanel Apache Configuration
 
-# 1. Force index.html as the primary directory index
+# 1. Force index.html as primary directory index
 DirectoryIndex index.html index.php default.php
 
-# 2. Redirect 404 errors back to index.html (eliminates white screen / 404 errors)
+# 2. Redirect 404 back to index.html
 ErrorDocument 404 /index.html
 
-# 3. Explicit MIME types to prevent browser blocking ES Modules
+# 3. Explicit MIME Types
 <IfModule mod_mime.c>
   AddType application/javascript .js .mjs
   AddType text/css .css
@@ -17,7 +17,7 @@ ErrorDocument 404 /index.html
   AddType application/json .json
 </IfModule>
 
-# 4. Single-Page Application (SPA) URL Rewriting
+# 4. SPA URL Rewriting
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -34,23 +34,12 @@ ErrorDocument 404 /index.html
   RewriteRule ^ index.html [L]
 </IfModule>
 
-# 5. Enable GZIP Compression for ultra-fast mobile loading
+# 5. GZIP Compression
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/plain
-  AddOutputFilterByType DEFLATE text/html
-  AddOutputFilterByType DEFLATE text/xml
-  AddOutputFilterByType DEFLATE text/css
-  AddOutputFilterByType DEFLATE text/javascript
-  AddOutputFilterByType DEFLATE application/xml
-  AddOutputFilterByType DEFLATE application/xhtml+xml
-  AddOutputFilterByType DEFLATE application/rss+xml
-  AddOutputFilterByType DEFLATE application/javascript
-  AddOutputFilterByType DEFLATE application/x-javascript
-  AddOutputFilterByType DEFLATE application/json
-  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json image/svg+xml
 </IfModule>
 
-# 6. Browser Caching Headers for Performance
+# 6. Browser Caching
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpg "access plus 1 year"
@@ -62,7 +51,6 @@ ErrorDocument 404 /index.html
   ExpiresByType video/mp4 "access plus 1 year"
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/x-javascript "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 

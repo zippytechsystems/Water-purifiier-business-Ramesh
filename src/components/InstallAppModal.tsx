@@ -30,15 +30,20 @@ export const InstallAppModal: React.FC<InstallAppModalProps> = ({ isOpen, onClos
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check if running as installed standalone PWA
-    const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || 
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    setIsStandalone(checkStandalone);
+    try {
+      // Check if running as installed standalone PWA
+      const isStandaloneMode = 
+        (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || 
+        (typeof window !== 'undefined' && (window.navigator as unknown as { standalone?: boolean })?.standalone === true);
+      setIsStandalone(!!isStandaloneMode);
 
-    // Detect iOS (iPhone / iPad)
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIosDevice);
+      // Detect iOS (iPhone / iPad)
+      const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent.toLowerCase() : '';
+      const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+      setIsIOS(isIosDevice);
+    } catch {
+      // Safe fallback
+    }
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
