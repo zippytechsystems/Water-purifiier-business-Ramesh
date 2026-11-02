@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { useSmoothScroll } from '../context/SmoothScrollContext';
 import { BUSINESS_INFO } from '../data/mockData';
 import { getGeneralWhatsAppUrl } from '../utils/whatsapp';
 import { 
@@ -21,14 +22,15 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const { isTelugu, t } = useLanguage();
+  const { scrollToTop } = useSmoothScroll();
 
   const handleNav = (page: PageRoute) => {
     onNavigate(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop(false);
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-16 pb-8 border-t border-slate-800">
+    <footer className="bg-slate-950 text-slate-300 pt-16 pb-8 border-t border-slate-800 scroll-defer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800/80">

@@ -88,6 +88,8 @@ export const AppliancesPage: React.FC<AppliancesPageProps> = ({ onNavigate }) =>
                 <img
                   src={product.imageUrl}
                   alt={product.nameEn}
+                  loading="lazy"
+                  decoding="async"
                   className="max-h-56 object-contain transition-transform duration-500 group-hover:scale-105"
                 />
                 {product.badge && (

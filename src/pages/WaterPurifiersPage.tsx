@@ -106,6 +106,8 @@ export const WaterPurifiersPage: React.FC<WaterPurifiersPageProps> = ({ onNaviga
                 <img
                   src={product.imageUrl}
                   alt={product.nameEn}
+                  loading="lazy"
+                  decoding="async"
                   className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
                 />
 

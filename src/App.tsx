@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from './types';
 import { LanguageProvider } from './context/LanguageContext';
+import { SmoothScrollProvider, useSmoothScroll } from './context/SmoothScrollContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
@@ -23,6 +24,7 @@ const validPages: PageRoute[] = [
 ];
 
 export function AppContent() {
+  const { scrollToTop } = useSmoothScroll();
   const [currentPage, setCurrentPage] = useState<PageRoute>(() => {
     const hash = window.location.hash.replace('#', '') as PageRoute;
     return validPages.includes(hash) ? hash : 'home';
@@ -34,7 +36,7 @@ export function AppContent() {
   const navigateTo = (page: PageRoute) => {
     setCurrentPage(page);
     window.location.hash = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop(false);
   };
 
   useEffect(() => {
@@ -42,12 +44,13 @@ export function AppContent() {
       const hash = window.location.hash.replace('#', '') as PageRoute;
       if (validPages.includes(hash)) {
         setCurrentPage(hash);
+        scrollToTop(false);
       }
     };
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+  }, [scrollToTop]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-cyan-500 selection:text-white">
@@ -135,7 +138,9 @@ export function AppContent() {
 export function App() {
   return (
     <LanguageProvider>
-      <AppContent />
+      <SmoothScrollProvider>
+        <AppContent />
+      </SmoothScrollProvider>
     </LanguageProvider>
   );
 }

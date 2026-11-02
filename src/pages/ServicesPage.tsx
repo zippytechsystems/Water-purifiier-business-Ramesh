@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { useSmoothScroll } from '../context/SmoothScrollContext';
 import { SERVICES_DATA, BUSINESS_INFO } from '../data/mockData';
 import { getServiceEnquiryWhatsAppUrl } from '../utils/whatsapp';
 import { 
@@ -22,11 +23,12 @@ interface ServicesPageProps {
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, onSelectService }) => {
   const { isTelugu, t } = useLanguage();
+  const { scrollToTop } = useSmoothScroll();
 
   const handleBook = (title: string) => {
     onSelectService(title);
     onNavigate('service-booking');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop(false);
   };
 
   return (

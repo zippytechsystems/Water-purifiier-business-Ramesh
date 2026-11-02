@@ -104,6 +104,8 @@ export const SparePartsPage: React.FC<SparePartsPageProps> = ({ onNavigate }) =>
                   <img
                     src={part.imageUrl}
                     alt={part.nameEn}
+                    loading="lazy"
+                    decoding="async"
                     className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
