@@ -14,7 +14,6 @@ import { SparePartsPage } from './pages/SparePartsPage';
 import { GalleryPage } from './pages/GalleryPage';
 import { ContactPage } from './pages/ContactPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
-import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
 export function AppContent() {
   const [currentPage, setCurrentPage] = useState<PageRoute>(() => {
@@ -22,7 +21,7 @@ export function AppContent() {
     const hash = window.location.hash.replace('#', '') as PageRoute;
     const validPages: PageRoute[] = [
       'home', 'about', 'water-purifiers', 'appliances', 'services', 
-      'service-booking', 'spare-parts', 'gallery', 'contact', 'privacy', 'admin'
+      'service-booking', 'spare-parts', 'gallery', 'contact', 'privacy'
     ];
     return validPages.includes(hash) ? hash : 'home';
   });
@@ -40,7 +39,7 @@ export function AppContent() {
       const hash = window.location.hash.replace('#', '') as PageRoute;
       const validPages: PageRoute[] = [
         'home', 'about', 'water-purifiers', 'appliances', 'services', 
-        'service-booking', 'spare-parts', 'gallery', 'contact', 'privacy', 'admin'
+        'service-booking', 'spare-parts', 'gallery', 'contact', 'privacy'
       ];
       if (validPages.includes(hash)) {
         setCurrentPage(hash);
@@ -109,16 +108,10 @@ export function AppContent() {
         {currentPage === 'privacy' && (
           <PrivacyPolicyPage onNavigate={navigateTo} />
         )}
-
-        {currentPage === 'admin' && (
-          <AdminDashboardPage onNavigate={navigateTo} />
-        )}
       </main>
 
-      {/* Corporate Footer (except when in admin mode) */}
-      {currentPage !== 'admin' && (
-        <Footer onNavigate={navigateTo} />
-      )}
+      {/* Corporate Footer */}
+      <Footer onNavigate={navigateTo} />
 
       {/* Floating Call & WhatsApp Buttons */}
       <FloatingActions onNavigate={navigateTo} />

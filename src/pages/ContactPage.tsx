@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { PageRoute } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { BUSINESS_INFO } from '../data/mockData';
-import { storageService } from '../services/storageService';
-import { getGeneralWhatsAppUrl, formatWhatsAppUrl } from '../utils/whatsapp';
+import { getGeneralWhatsAppUrl, getContactWhatsAppUrl } from '../utils/whatsapp';
 import { 
   Phone, 
   MessageCircle, 
@@ -14,7 +13,8 @@ import {
   CheckCircle2, 
   ExternalLink,
   Mail,
-  AlertCircle
+  AlertCircle,
+  PhoneCall
 } from 'lucide-react';
 
 interface ContactPageProps {
@@ -37,8 +37,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.phone.trim() || !form.message.trim()) {
-      setError('Please fill all required fields.');
+    if (!form.name.trim() || form.name.trim().length < 2) {
+      setError('Please provide your name (at least 2 letters).');
       return;
     }
 
@@ -48,30 +48,36 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       return;
     }
 
-    try {
-      storageService.createEnquiry({
-        name: form.name.trim(),
-        phone: form.phone.trim(),
-        interest: form.interest,
-        villageTown: form.villageTown.trim(),
-        message: form.message.trim()
-      });
-
-      setSubmitted(true);
-      setError('');
-    } catch {
-      setError('Failed to submit enquiry. Please call us directly.');
+    if (!form.message.trim()) {
+      setError('Please enter your enquiry message.');
+      return;
     }
+
+    const whatsappUrl = getContactWhatsAppUrl(
+      form.name.trim(), 
+      clean, 
+      form.villageTown.trim(), 
+      form.interest, 
+      form.message.trim(), 
+      isTelugu
+    );
+
+    setSubmitted(true);
+    setError('');
+
+    // Open WhatsApp directly
+    window.open(whatsappUrl, '_blank');
   };
 
   const getCustomWhatsAppEnquiry = () => {
-    const text = `Hello Priya's AquaFresh,
-My Name: ${form.name}
-Mobile: ${form.phone}
-Village: ${form.villageTown || 'Raghunathpally'}
-Interest: ${form.interest}
-Message: ${form.message}`;
-    return formatWhatsAppUrl(text);
+    return getContactWhatsAppUrl(
+      form.name.trim(),
+      form.phone.trim(),
+      form.villageTown.trim(),
+      form.interest,
+      form.message.trim(),
+      isTelugu
+    );
   };
 
   return (
@@ -199,31 +205,41 @@ Message: ${form.message}`;
             </p>
 
             {submitted ? (
-              <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-4">
+              <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-4 animate-in zoom-in-95 duration-200">
                 <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
                 <h4 className="font-bold text-slate-900 text-base">
-                  {t("Enquiry Sent Successfully!", "మీ సందేశం అందింది!")}
+                  {t("WhatsApp Message Ready!", "మీ వివరాలు సిద్ధమయ్యాయి!")}
                 </h4>
                 <p className="text-xs text-slate-600">
                   {t(
-                    "Our representative will review your message and contact you promptly.",
-                    "మా ప్రతినిధి మీ వివరాలను చూసి వెంటనే సంప్రదిస్తారు."
+                    "Your message has been prepared for WhatsApp Business. If the chat did not open automatically, tap below:",
+                    "మీ సందేశం వాట్సాప్ కోసం సిద్ధమైంది. వాట్సాప్ ఓపెన్ కాకపోతే కింద ఉన్న బటన్ క్లిక్ చేయండి:"
                   )}
                 </p>
 
-                <a
-                  href={getCustomWhatsAppEnquiry()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs"
-                >
-                  <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
-                  <span>Forward Details to WhatsApp</span>
-                </a>
+                <div className="space-y-2 pt-2">
+                  <a
+                    href={getCustomWhatsAppEnquiry()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                    <span>Send Message on WhatsApp (9182857848)</span>
+                  </a>
+
+                  <a
+                    href={`tel:${BUSINESS_INFO.phone}`}
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Call Hotline: {BUSINESS_INFO.phone}</span>
+                  </a>
+                </div>
 
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="block mx-auto text-xs text-slate-500 hover:underline pt-2"
+                  className="block mx-auto text-xs text-slate-500 hover:underline pt-2 cursor-pointer"
                 >
                   Send another message
                 </button>
@@ -312,10 +328,10 @@ Message: ${form.message}`;
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Submit Enquiry</span>
+                  <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                  <span>Send Enquiry via WhatsApp (9182857848)</span>
                 </button>
               </form>
             )}

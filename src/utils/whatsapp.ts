@@ -1,4 +1,4 @@
-import { ServiceBooking, Product, SparePartItem } from '../types';
+import { ServiceBookingData, Product, SparePartItem } from '../types';
 import { BUSINESS_INFO } from '../data/mockData';
 
 const WHATSAPP_NUMBER = BUSINESS_INFO.whatsapp; // 9182857848
@@ -8,7 +8,6 @@ const WHATSAPP_NUMBER = BUSINESS_INFO.whatsapp; // 9182857848
  */
 export function formatWhatsAppUrl(message: string, customPhone?: string): string {
   const phone = (customPhone || WHATSAPP_NUMBER).replace(/[^0-9]/g, '');
-  // If it's a 10 digit Indian number without country code, add 91
   const fullPhone = phone.length === 10 ? `91${phone}` : phone;
   const encodedMessage = encodeURIComponent(message);
   return `https://wa.me/${fullPhone}?text=${encodedMessage}`;
@@ -46,14 +45,14 @@ Please share best discount price, availability and installation details.`;
 /**
  * Direct WhatsApp link for Service Booking Submission
  */
-export function getBookingWhatsAppUrl(booking: ServiceBooking, isTelugu: boolean = false): string {
+export function getBookingWhatsAppUrl(booking: ServiceBookingData, isTelugu: boolean = false): string {
   const title = isTelugu 
     ? `*లాస్య వాటర్ ప్యూరిఫైయర్ - సర్వీస్ బుకింగ్ అభ్యర్థన*`
     : `*PRIYA'S AQUAFRESH – SERVICE BOOKING REQUEST*`;
 
   const message = `${title}
 ━━━━━━━━━━━━━━━━━━━
-📋 *Booking Ref:* #${booking.reference}
+📋 *Enquiry Ref:* #${booking.reference}
 👤 *Customer Name:* ${booking.customerName}
 📱 *Mobile Number:* ${booking.mobileNumber}
 📍 *Village / Town:* ${booking.villageTown}
@@ -110,6 +109,29 @@ Please confirm stock availability and pricing for delivery in Raghunathpally / J
 }
 
 /**
+ * Direct WhatsApp link for Contact Form Enquiry
+ */
+export function getContactWhatsAppUrl(name: string, phone: string, village: string, interest: string, messageText: string, isTelugu: boolean = false): string {
+  const greeting = isTelugu 
+    ? `నమస్తే ప్రియాస్ ఆక్వాఫ్రెష్ (లాస్య వాటర్ సేల్స్ & సర్వీసెస్),` 
+    : `Hello Priya's AquaFresh (Lasya Water Purifier Sales & Services),`;
+
+  const message = `${greeting}
+నేను వెబ్‌సైట్ ద్వారా సంప్రదిస్తున్నాను / I am contacting via your website:
+
+👤 *Name:* ${name}
+📱 *Phone:* ${phone}
+📍 *Village/Town:* ${village || 'Raghunathpally / Jangaon'}
+🎯 *Interest:* ${interest}
+💬 *Message:* ${messageText}
+
+దయచేసి వివరాలు తెలియజేయగలరు.
+Please share relevant details and callback.`;
+
+  return formatWhatsAppUrl(message);
+}
+
+/**
  * Direct General WhatsApp Inquiry
  */
 export function getGeneralWhatsAppUrl(isTelugu: boolean = false): string {
@@ -118,18 +140,4 @@ export function getGeneralWhatsAppUrl(isTelugu: boolean = false): string {
     : `Hello Priya's AquaFresh - Lasya Water Purifier Sales & Services, I am contacting you for water purifier sales, installation, or service assistance.`;
 
   return formatWhatsAppUrl(message);
-}
-
-/**
- * Admin direct reply to customer on WhatsApp
- */
-export function getAdminCustomerWhatsAppUrl(customerPhone: string, customerName: string, bookingRef: string): string {
-  const message = `Hello ${customerName},
-Greetings from *Priya's AquaFresh – Lasya Water Purifier Sales & Services*, Raghunathpally.
-
-We have received your Service Request #${bookingRef}.
-Our technician is reviewing your request. Please let us know if you need any immediate assistance.
-📞 Contact: ${BUSINESS_INFO.phone}`;
-
-  return formatWhatsAppUrl(message, customerPhone);
 }

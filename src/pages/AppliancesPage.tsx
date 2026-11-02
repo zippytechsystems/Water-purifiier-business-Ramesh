@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PageRoute } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { PRODUCTS_DATA } from '../data/mockData';
+import { PRODUCTS_DATA, BUSINESS_INFO } from '../data/mockData';
 import { getProductWhatsAppUrl, getGeneralWhatsAppUrl } from '../utils/whatsapp';
 import { 
   Tv, 
@@ -172,7 +172,7 @@ export const AppliancesPage: React.FC<AppliancesPageProps> = ({ onNavigate }) =>
                 {t("Fast Store Enquiries", "వేగవంతమైన సమాచారం")}
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Call our direct phone line 9014357848 or chat on WhatsApp 9182857848 for instant stock availability.
+                Call our direct hotline <a href={`tel:${BUSINESS_INFO.phone}`} className="text-cyan-600 font-bold hover:underline">{BUSINESS_INFO.phone}</a> or chat on WhatsApp <a href={`https://wa.me/${BUSINESS_INFO.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-emerald-600 font-bold hover:underline">{BUSINESS_INFO.whatsapp}</a> for instant stock availability.
               </p>
             </div>
           </div>

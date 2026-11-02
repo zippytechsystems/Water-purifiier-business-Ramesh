@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PageRoute } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { PRODUCTS_DATA } from '../data/mockData';
+import { PRODUCTS_DATA, BUSINESS_INFO } from '../data/mockData';
 import { getProductWhatsAppUrl } from '../utils/whatsapp';
 import { 
   Droplets, 
@@ -203,10 +203,10 @@ export const WaterPurifiersPage: React.FC<WaterPurifiersPageProps> = ({ onNaviga
 
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3">
               <a
-                href={`tel:${PRODUCTS_DATA ? '9014357848' : ''}`}
+                href={`tel:${BUSINESS_INFO.phone}`}
                 className="w-full py-3 rounded-xl bg-white text-slate-950 font-bold text-xs text-center shadow-md hover:bg-slate-100 transition-colors"
               >
-                Call: 9014357848
+                Call: {BUSINESS_INFO.phone}
               </a>
               <button
                 onClick={() => onNavigate('service-booking')}

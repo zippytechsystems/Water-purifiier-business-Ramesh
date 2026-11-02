@@ -1,7 +1,7 @@
 # Priya's AquaFresh – Lasya Water Purifier Sales & Services
 
 > **Pure Water. Healthy Life. | స్వచ్ఛమైన నీరు. ఆరోగ్యకరమైన జీవితం.**  
-> Official Commercial Website & Service Management Portal for **Priya's AquaFresh – Lasya Water Purifier Sales & Services**, located on Khilashapur Road, Raghunathpally, Jangaon District, Telangana, India.
+> Official Commercial Website & Direct WhatsApp Business Portal for **Priya's AquaFresh – Lasya Water Purifier Sales & Services**, located on Khilashapur Road, Raghunathpally, Jangaon District, Telangana, India.
 
 ---
 
@@ -12,7 +12,7 @@
 | **Brand Name** | Priya's AquaFresh (ప్రియాస్ ఆక్వాఫ్రెష్) |
 | **Business Title** | Lasya Water Purifier Sales & Services (లాస్య వాటర్ సేల్స్ & సర్వీసెస్) |
 | **Proprietor / Contact** | Ramesh Kumar |
-| **Calling Helpline** | `+91 90143 57848` |
+| **Calling Hotline** | `+91 90143 57848` (`tel:9014357848`) |
 | **WhatsApp Business** | `+91 91828 57848` ([wa.me/9182857848](https://wa.me/9182857848)) |
 | **GSTIN Registration** | `36ETWPA6540J1Z7` |
 | **Physical Location** | Khilashapur Road, Village & Mandal Raghunathpally, District Jangaon, Telangana 506244 |
@@ -21,34 +21,36 @@
 
 ---
 
-## 🌟 Key Platform Features
+## 🌟 Architecture & Core Features
 
-1. **Bilingual Experience (English & Telugu)**:
+This website is engineered as a **direct WhatsApp enquiry and lead-generation platform** designed for maximum conversion, speed, and reliability:
+
+1. **Direct WhatsApp Business Integration**:
+   - **Sales ("Sell")**: Every water purifier, fridge, washing machine, cooler, and AC spare part has a direct WhatsApp enquiry button that pre-fills the exact model name, warranty, and pricing enquiry for `https://wa.me/9182857848`.
+   - **Service Booking ("Booking")**: Customers enter their name, 10-digit phone, village, address, service category, product type, problem, and preferred time slot. On submission, the form validates the input, generates a tracking reference (e.g. `LWP-2026-XXXX`), and immediately opens WhatsApp with the structured booking details ready to send.
+   - **Spare Parts Enquiries**: 1-click availability check for RO membranes, sediment filters, pumps, and motors.
+   - **Contact Form**: Direct pre-filled WhatsApp enquiry for custom customer messages.
+
+2. **Bilingual Experience (English & Telugu)**:
    - Instant language toggle in the navigation bar.
    - Natural Telugu business copy preserved directly from the supplied posters: *"మీ ఇంట్లో తాగునీరు నిజంగా శుభ్రమైనదేనా?"* & *"లాస్య వాటర్ ప్యూరిఫైయర్ స్వచ్ఛమైన నీటికి... నమ్మకమైన ఎంపిక"*.
-2. **Direct WhatsApp Business Integration**:
-   - **Product Sales ("Sell")**: Every water purifier, fridge, washing machine, cooler, and AC spare part has a direct WhatsApp enquiry button with pre-filled product name and category details.
-   - **Service Booking ("Booking")**: Customers get a unique reference ID (e.g., `LWP-2026-XXXX`) and a 1-click button to send the full appointment details directly to `9182857848` for instant technician dispatch.
-   - **Spare Parts Direct Enquiry**: 1-click check for membranes, filters, pumps, and motors.
+
 3. **Official Media & Assets**:
    - **Promotional Video**: Embedded responsive HTML5 player with showroom presenter, audio mute control, and optimized video playback (`/videos/promotional-video.mp4`).
    - **Photo Gallery**: Extracted video frames showcasing water dispenser purity tests, showroom displays, AC spare parts shelves, and appliances.
-4. **Service Booking Engine**:
-   - Interactive booking form with multi-point validation (Name, 10-digit mobile, address, village, service type, product, problem description, date, and time slot).
-   - LocalStorage and relational database integration with instant receipt generation.
-5. **Admin Operations Dashboard**:
-   - Protected login portal (Demo: `admin` / `admin123`).
-   - Live KPI counters: Total Bookings, New Unassigned, In Progress, Completed, Total Enquiries.
-   - Live booking status updates (`New`, `Contacted`, `Confirmed`, `Assigned`, `In Progress`, `Completed`, `Cancelled`).
-   - Technician Assignment modal.
-   - One-click Technician Job Sheet printing.
-   - One-click CSV Export for bookkeeping.
-   - Direct WhatsApp customer reply from the dashboard.
-6. **Local SEO Optimization**:
+   - **1-Year Guarantee Badge**: Highlighted across all domestic RO models.
+
+4. **Privacy-First & Zero Maintenance**:
+   - No database dependencies or login portals required.
+   - No customer data is stored on remote servers; all leads flow straight to the owner's WhatsApp Business app.
+   - Extremely fast page load times and zero backend vulnerability attack surfaces.
+
+5. **Local SEO Optimization**:
    - Complete Schema.org `HomeGoodsStore` JSON-LD structured data with coordinates, opening hours, GST, and phone numbers.
    - Dynamic meta tags, OpenGraph social sharing preview, `robots.txt`, and `sitemap.xml`.
-7. **Relational Database Architecture**:
-   - Production-ready MySQL schema in `/database/schema.sql` covering admin authentication, products, categories, bookings, enquiries, and reporting views.
+
+6. **Enterprise Architecture Ready**:
+   - Includes a complete relational MySQL database schema in `/database/schema.sql` for future enterprise backoffice expansion if needed.
 
 ---
 
@@ -56,7 +58,7 @@
 
 ```
 ├── database/
-│   └── schema.sql                # Complete MySQL relational database schema & seed data
+│   └── schema.sql                # Production MySQL relational schema (reference)
 ├── public/
 │   ├── favicon.svg
 │   ├── robots.txt                # Search engine crawler directives
@@ -75,7 +77,7 @@
 │   ├── context/
 │   │   └── LanguageContext.tsx   # English / Telugu state management
 │   ├── data/
-│   │   └── mockData.ts           # Authentic business catalogue, services, and initial seed bookings
+│   │   └── mockData.ts           # Authentic business catalogue, services, and showroom items
 │   ├── pages/
 │   │   ├── HomePage.tsx          # 10 comprehensive sections (Hero, Highlights, Video, Map, etc.)
 │   │   ├── AboutPage.tsx         # Business mission and local presence
@@ -86,10 +88,7 @@
 │   │   ├── SparePartsPage.tsx    # Filter candles, membranes, pumps, and motors
 │   │   ├── GalleryPage.tsx       # Showroom photo gallery with lightbox preview
 │   │   ├── ContactPage.tsx       # Store info, enquiry form, and embedded Google Map
-│   │   ├── PrivacyPolicyPage.tsx # Data privacy & customer ethics
-│   │   └── AdminDashboardPage.tsx# Protected administrative portal
-│   ├── services/
-│   │   └── storageService.ts     # Persistent storage and API endpoints
+│   │   └── PrivacyPolicyPage.tsx # Data privacy & customer ethics
 │   ├── types/
 │   │   └── index.ts              # TypeScript type definitions
 │   ├── utils/
@@ -125,21 +124,13 @@
 
 ---
 
-## 🔒 Admin Portal Credentials
+## 🌐 Hostinger & Web Hosting Deployment Guide
 
-- **URL**: Click **"Admin"** in the top navigation strip or go to `http://localhost:5173/#admin`
-- **Username**: `admin`
-- **Password**: `admin123` (or `ramesh9014`)
-
----
-
-## 🌐 Production Deployment Guide
-
-### Option A: Hostinger / Shared Hosting / cPanel
+### Option A: Hostinger Shared / Business Web Hosting (Recommended)
 1. Run `npm run build` locally.
-2. Upload the contents of the `dist/` folder into your `public_html/` directory on Hostinger.
-3. Import `database/schema.sql` into your Hostinger phpMyAdmin / MySQL database.
-4. Set up an `.htaccess` file in `public_html` for single-page routing:
+2. Open Hostinger File Manager or connect via FTP/SFTP.
+3. Upload all files from the generated `dist/` directory directly into `public_html/`.
+4. Ensure an `.htaccess` file exists in `public_html/` with the following configuration:
    ```apache
    <IfModule mod_rewrite.c>
      RewriteEngine On
@@ -150,9 +141,11 @@
      RewriteRule . /index.html [L]
    </IfModule>
    ```
+5. Your website will be live instantly with HTTPS, full SEO, video streaming, and WhatsApp integration!
 
-### Option B: Vercel / Netlify
-1. Connect your Git repository.
-2. Build Command: `npm run build`
-3. Output Directory: `dist`
-4. The site will deploy instantly with HTTPS enabled.
+### Option B: Vercel / Netlify / GitHub Pages
+1. Push repository to GitHub.
+2. Connect the repository to Vercel or Netlify.
+3. Build Command: `npm run build`
+4. Output Directory: `dist`
+5. The site deploys automatically with a global CDN.

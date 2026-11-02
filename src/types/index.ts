@@ -10,8 +10,7 @@ export type PageRoute =
   | 'spare-parts'
   | 'gallery'
   | 'contact'
-  | 'privacy'
-  | 'admin';
+  | 'privacy';
 
 export type ServiceCategory = 
   | 'New Installation'
@@ -22,17 +21,7 @@ export type ServiceCategory =
   | 'Membrane Replacement'
   | 'Other Service';
 
-export type BookingStatus = 
-  | 'New'
-  | 'Contacted'
-  | 'Confirmed'
-  | 'Assigned'
-  | 'In Progress'
-  | 'Completed'
-  | 'Cancelled';
-
-export interface ServiceBooking {
-  id: string;
+export interface ServiceBookingData {
   reference: string;
   customerName: string;
   mobileNumber: string;
@@ -43,23 +32,16 @@ export interface ServiceBooking {
   problemDescription: string;
   preferredDate: string;
   preferredTime: string;
-  status: BookingStatus;
-  assignedTechnician?: string;
-  technicianPhone?: string;
-  notes?: string;
   createdAt: string;
-  updatedAt?: string;
 }
 
-export interface CustomerEnquiry {
-  id: string;
+export interface CustomerEnquiryData {
   reference: string;
   name: string;
   phone: string;
   interest: string;
   villageTown?: string;
   message: string;
-  status: 'New' | 'Contacted' | 'Closed';
   createdAt: string;
 }
 
@@ -113,12 +95,4 @@ export interface GalleryItem {
   imageUrl: string;
   captionEn: string;
   captionTe: string;
-}
-
-export interface AdminUser {
-  id: string;
-  username: string;
-  fullName: string;
-  role: 'super_admin' | 'service_manager' | 'technician';
-  phone: string;
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ServiceCategory, ServiceBooking } from '../types';
+import { ServiceCategory, ServiceBookingData } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { storageService } from '../services/storageService';
 import { getBookingWhatsAppUrl, getGeneralWhatsAppUrl } from '../utils/whatsapp';
 import { BUSINESS_INFO } from '../data/mockData';
 import { 
@@ -15,9 +14,10 @@ import {
   AlertCircle, 
   CheckCircle2, 
   MessageCircle, 
-  ArrowRight,
-  ShieldCheck,
-  RotateCcw
+  ArrowRight, 
+  ShieldCheck, 
+  RotateCcw,
+  PhoneCall
 } from 'lucide-react';
 
 interface ServiceBookingPageProps {
@@ -46,7 +46,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [confirmedBooking, setConfirmedBooking] = useState<ServiceBooking | null>(null);
+  const [confirmedBooking, setConfirmedBooking] = useState<ServiceBookingData | null>(null);
 
   const serviceCategories: ServiceCategory[] = [
     'New Installation',
@@ -81,8 +81,8 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.customerName.trim()) {
-      newErrors.customerName = 'Please enter customer name.';
+    if (!formData.customerName.trim() || formData.customerName.trim().length < 2) {
+      newErrors.customerName = 'Please enter customer name (at least 2 letters).';
     }
 
     const cleanPhone = formData.mobileNumber.replace(/\D/g, '');
@@ -98,7 +98,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
       newErrors.villageTown = 'Please enter village or town name.';
     }
 
-    if (!formData.problemDescription.trim() || formData.problemDescription.length < 5) {
+    if (!formData.problemDescription.trim() || formData.problemDescription.trim().length < 5) {
       newErrors.problemDescription = 'Please briefly describe the service need or problem (min 5 chars).';
     }
 
@@ -120,8 +120,12 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Actually save record into localStorage / mock DB
-      const savedBooking = storageService.createBooking({
+      // Generate clean unique reference
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const reference = `LWP-${new Date().getFullYear()}-${randomSuffix}`;
+
+      const newBooking: ServiceBookingData = {
+        reference,
         customerName: formData.customerName.trim(),
         mobileNumber: formData.mobileNumber.trim(),
         address: formData.address.trim(),
@@ -130,12 +134,17 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
         productType: formData.productType,
         problemDescription: formData.problemDescription.trim(),
         preferredDate: formData.preferredDate,
-        preferredTime: formData.preferredTime
-      });
+        preferredTime: formData.preferredTime,
+        createdAt: new Date().toISOString()
+      };
 
-      setConfirmedBooking(savedBooking);
+      setConfirmedBooking(newBooking);
+
+      // Open WhatsApp directly with pre-filled message
+      const whatsappUrl = getBookingWhatsAppUrl(newBooking, isTelugu);
+      window.open(whatsappUrl, '_blank');
     } catch {
-      alert('Unable to save booking. Please try again or call us directly.');
+      alert('Unable to format booking. Please call our hotline directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -171,14 +180,14 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
           </h1>
           <p className="text-sm text-slate-600 mt-2">
             {t(
-              "Schedule your doorstep service in Raghunathpally, Jangaon, and neighboring areas. Our verified technician will visit with genuine parts.",
+              "Schedule your doorstep service in Raghunathpally, Jangaon, and neighboring areas. Fill details below and confirm directly on WhatsApp Business with our technician team.",
               "రఘునాథపల్లి, జనగామ మరియు పరిసర గ్రామాలకు సులభమైన సర్వీస్ బుకింగ్. వివరాలు నమోదు చేసి నేరుగా వాట్సాప్ లో నిర్ధారించుకోండి."
             )}
           </p>
         </div>
 
         {/* ======================================================= */}
-        {/* CONFIRMATION SCREEN AFTER SUCCESSFUL DATABASE SAVE      */}
+        {/* CONFIRMATION SCREEN: DIRECT WHATSAPP ACTION             */}
         {/* ======================================================= */}
         {confirmedBooking ? (
           <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-2xl animate-in zoom-in-95 duration-300 text-center">
@@ -187,15 +196,15 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
             </div>
 
             <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600 block mb-1">
-              {t("Booking Successfully Saved!", "బుకింగ్ విజయవంతంగా నమోదైంది!")}
+              {t("WhatsApp Service Request Ready!", "వాట్సాప్ సర్వీస్ అభ్యర్థన సిద్ధమైంది!")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
               Reference #{confirmedBooking.reference}
             </h2>
             <p className="text-sm text-slate-600 max-w-lg mx-auto mb-8">
               {t(
-                `Thank you, ${confirmedBooking.customerName}. Your service request for "${confirmedBooking.serviceCategory}" has been stored in our system.`,
-                `ధన్యవాదాలు, ${confirmedBooking.customerName}. మీ "${confirmedBooking.serviceCategory}" అభ్యర్థన సిస్టమ్ లో రికార్డ్ చేయబడింది.`
+                `Thank you, ${confirmedBooking.customerName}. Your service request for "${confirmedBooking.serviceCategory}" has been prepared. WhatsApp should open automatically. If it didn't open, tap the button below.`,
+                `ధన్యవాదాలు, ${confirmedBooking.customerName}. మీ "${confirmedBooking.serviceCategory}" అభ్యర్థన వివరాలు సిద్ధమయ్యాయి. వాట్సాప్ లో పంపి తక్షణమే టెక్నీషియన్ ను నిర్ధారించుకోండి.`
               )}
             </p>
 
@@ -217,30 +226,45 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                 <span className="text-slate-500">Preferred Slot:</span>
                 <span className="font-bold text-slate-900">{confirmedBooking.preferredDate} ({confirmedBooking.preferredTime})</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between pb-2 border-b border-slate-200">
                 <span className="text-slate-500">Location:</span>
                 <span className="font-bold text-slate-900">{confirmedBooking.villageTown}</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Address:</span>
+                <span className="font-semibold text-slate-800 text-right max-w-[60%]">{confirmedBooking.address}</span>
+              </div>
             </div>
 
-            {/* DIRECT WHATSAPP INTEGRATION - User Explicit Requirement */}
-            <div className="space-y-4 max-w-lg mx-auto">
+            {/* DIRECT WHATSAPP ACTION BUTTONS */}
+            <div className="space-y-3 max-w-lg mx-auto">
               <a
                 href={getBookingWhatsAppUrl(confirmedBooking, isTelugu)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm sm:text-base shadow-xl hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-3 transform hover:-translate-y-0.5"
+                className="w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm sm:text-base shadow-xl hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-3 transform hover:-translate-y-0.5 cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 fill-white text-emerald-600" />
-                <span>{t("Send Booking to WhatsApp Business (9182857848)", "వాట్సాప్ బిజినెస్ కు వివరాలు పంపండి (9182857848)")}</span>
+                <span>{t("Send Booking to WhatsApp (9182857848)", "వాట్సాప్ కు పంపండి (9182857848)")}</span>
               </a>
 
-              <p className="text-xs text-slate-500">
-                {t(
-                  "Sending your booking reference on WhatsApp ensures instant technician assignment and real-time appointment updates.",
-                  "వాట్సాప్ లో పంపడం ద్వారా టెక్నీషియన్ త్వరగా స్పందించి సమయాన్ని కన్ఫర్మ్ చేస్తారు."
-                )}
-              </p>
+              <a
+                href={`tel:${BUSINESS_INFO.phone}`}
+                className="w-full py-3 px-6 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <PhoneCall className="w-4 h-4 text-cyan-400" />
+                <span>{t(`Call Direct Hotline: ${BUSINESS_INFO.phone}`, `హెల్ప్‌లైన్ కాల్: ${BUSINESS_INFO.phone}`)}</span>
+              </a>
+
+              <div className="p-3.5 rounded-xl bg-slate-100 text-slate-600 text-[11px] leading-relaxed border border-slate-200/80 text-center">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 inline-block mr-1 align-text-bottom" />
+                <span>
+                  {t(
+                    "Direct WhatsApp Connection: Your service enquiry is delivered directly to our official business WhatsApp without storing unnecessary database records. 100% genuine parts & verified local technicians.",
+                    "నేరుగా వాట్సాప్ కనెక్షన్: మీ వివరాలు నేరుగా మా వాట్సాప్ బిజినెస్ కు చేరుతాయి. స్వచ్ఛమైన స్పేర్ పార్ట్స్ మరియు అనుభవజ్ఞులైన స్థానిక టెక్నీషియన్లు."
+                  )}
+                </span>
+              </div>
 
               <div className="pt-4 flex items-center justify-center gap-4">
                 <button
@@ -253,7 +277,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
 
                 <button
                   onClick={onNavigateHome}
-                  className="px-5 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-xs font-semibold cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-slate-800 text-white hover:bg-slate-700 text-xs font-semibold cursor-pointer"
                 >
                   <span>{t("Back to Home", "హోమ్ పేజీకి వెళ్లండి")}</span>
                 </button>
@@ -331,7 +355,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                       type="text"
                       value={formData.villageTown}
                       onChange={(e) => setFormData({ ...formData, villageTown: e.target.value })}
-                      placeholder="e.g. Raghunathpally, Khilashapur, Jangaon"
+                      placeholder="e.g. Raghunathpally / Khilashapur / Jangaon"
                       className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border ${
                         errors.villageTown ? 'border-red-500 bg-red-50/30' : 'border-slate-300'
                       } focus:outline-none focus:ring-2 focus:ring-cyan-500`}
@@ -347,7 +371,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                 {/* Street / House Address */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {t("House No. / Street Address", "ఇంటి నెం. / వీధి అడ్రస్")} <span className="text-red-500">*</span>
+                    {t("Street Address / Landmark", "వీధి / ఇంటి నెంబర్ / ల్యాండ్‌మార్క్")} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Home className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -355,7 +379,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                       type="text"
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      placeholder="e.g. Near Old Bus Stand, Main Road"
+                      placeholder="e.g. H.No 2-45, Near Gram Panchayat"
                       className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border ${
                         errors.address ? 'border-red-500 bg-red-50/30' : 'border-slate-300'
                       } focus:outline-none focus:ring-2 focus:ring-cyan-500`}
@@ -369,7 +393,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                 </div>
               </div>
 
-              {/* Service & Product Details Grid */}
+              {/* Service & Product Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Service Category */}
                 <div>
@@ -379,7 +403,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                   <select
                     value={formData.serviceCategory}
                     onChange={(e) => setFormData({ ...formData, serviceCategory: e.target.value as ServiceCategory })}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
                   >
                     {serviceCategories.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -390,12 +414,12 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                 {/* Product Type */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {t("Product Model / Appliance", "ప్రాడక్ట్ / మోడల్")}
+                    {t("Product Type", "ప్రాడక్ట్ రకం")} <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.productType}
                     onChange={(e) => setFormData({ ...formData, productType: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
                   >
                     {productTypes.map((prod) => (
                       <option key={prod} value={prod}>{prod}</option>
@@ -407,17 +431,20 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
               {/* Problem Description */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                  {t("Problem Description / Request Details", "సమస్య లేదా సర్వీస్ వివరాలు")} <span className="text-red-500">*</span>
+                  {t("Problem Description / Details", "సమస్య వివరాలు")} <span className="text-red-500">*</span>
                 </label>
                 <textarea
+                  rows={3}
                   value={formData.problemDescription}
                   onChange={(e) => setFormData({ ...formData, problemDescription: e.target.value })}
-                  rows={3}
-                  placeholder="e.g. Water tastes bad / slow flow / leaking from bottom pipe / new machine installation required..."
-                  className={`w-full px-4 py-2.5 rounded-xl text-sm border ${
+                  placeholder={t(
+                    "e.g. Water purifier leaking from bottom, bad taste, slow filtration, motor not starting...",
+                    "ఉదా: నీరు లీక్ అవుతోంది, ఫిల్టర్ మార్చాలి, మోటార్ స్టార్ట్ అవ్వడం లేదు..."
+                  )}
+                  className={`w-full px-3.5 py-2.5 rounded-xl text-sm border ${
                     errors.problemDescription ? 'border-red-500 bg-red-50/30' : 'border-slate-300'
                   } focus:outline-none focus:ring-2 focus:ring-cyan-500`}
-                ></textarea>
+                />
                 {errors.problemDescription && (
                   <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" /> {errors.problemDescription}
@@ -425,21 +452,21 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                 )}
               </div>
 
-              {/* Date & Time Slot Grid */}
+              {/* Preferred Slot */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Preferred Date */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {t("Preferred Date", "కోరుకున్న తేదీ")} <span className="text-red-500">*</span>
+                    {t("Preferred Date", "తేదీ")} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
                       type="date"
                       value={formData.preferredDate}
-                      min={new Date().toISOString().split('T')[0]}
                       onChange={(e) => setFormData({ ...formData, preferredDate: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      min={new Date().toISOString().split('T')[0]}
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
                     />
                   </div>
                 </div>
@@ -447,14 +474,14 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                 {/* Preferred Time Slot */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {t("Preferred Time Slot", "సమయం స్లాట్")}
+                    {t("Preferred Time Slot", "సమయం")} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Clock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <select
                       value={formData.preferredTime}
                       onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
                     >
                       {timeSlots.map((slot) => (
                         <option key={slot} value={slot}>{slot}</option>
@@ -472,11 +499,11 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                   className="w-full py-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-base shadow-xl hover:shadow-cyan-900/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {isSubmitting ? (
-                    <span>Saving booking...</span>
+                    <span>Formatting WhatsApp message...</span>
                   ) : (
                     <>
-                      <span>{t("Confirm Service Booking & Get Reference", "సర్వీస్ బుకింగ్ కన్ఫర్మ్ చేయండి")}</span>
-                      <ArrowRight className="w-5 h-5" />
+                      <span>{t("Confirm Service Booking & Open WhatsApp", "సర్వీస్ వివరాలు వాట్సాప్ లో పంపండి")}</span>
+                      <ArrowRight className="w-5 h-5 text-emerald-400" />
                     </>
                   )}
                 </button>
@@ -490,7 +517,7 @@ export const ServiceBookingPage: React.FC<ServiceBookingPageProps> = ({
                   </div>
                   <div>
                     <h4 className="font-bold text-slate-900 text-sm">
-                      {t("Prefer booking directly on WhatsApp?", "నేరుగా వాట్సాప్ లో బుక్ చేయాలనుకుంటున్నారా?")}
+                      {t("Prefer chatting directly on WhatsApp?", "నేరుగా వాట్సాప్ లో మాట్లాడాలనుకుంటున్నారా?")}
                     </h4>
                     <p className="text-xs text-slate-600">
                       {t("Message Priya's AquaFresh directly on WhatsApp: 9182857848", "మా వాట్సాప్ నెంబర్ కు మెసేజ్ చేసి వెంటనే మాట్లాడండి")}

@@ -11,9 +11,7 @@ import {
   ShieldCheck, 
   Clock, 
   MapPin, 
-  Globe,
-  Lock,
-  ChevronDown
+  Globe
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -25,7 +23,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const { isTelugu, toggleLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [productsDropdown, setProductsDropdown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,7 +47,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const handleNavClick = (page: PageRoute) => {
     onNavigate(page);
     setMobileMenuOpen(false);
-    setProductsDropdown(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -95,16 +91,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               <Phone className="w-3.5 h-3.5 text-cyan-400" />
               <span>{BUSINESS_INFO.phone}</span>
             </a>
-
-            {/* Admin Login Shortcut */}
-            <button
-              onClick={() => handleNavClick('admin')}
-              className="hidden sm:flex items-center gap-1 text-slate-400 hover:text-cyan-300 pl-2 text-xs border-l border-slate-700"
-              title="Admin Portal"
-            >
-              <Lock className="w-3 h-3" />
-              <span>Admin</span>
-            </button>
           </div>
         </div>
       </div>
@@ -129,7 +115,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                 alt="Priya's AquaFresh Logo" 
                 className="w-full h-full object-contain bg-white rounded-lg p-1"
                 onError={(e) => {
-                  // Fallback to text logo if image unavailable
                   e.currentTarget.style.display = 'none';
                 }}
               />
@@ -174,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             {/* Book Service Quick CTA */}
             <button
               onClick={() => handleNavClick('service-booking')}
-              className="px-4 py-2 rounded-lg text-xs md:text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
               {t('Book Service', 'సర్వీస్ బుకింగ్')}
             </button>
@@ -184,7 +169,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               href={getGeneralWhatsAppUrl(isTelugu)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs md:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
             >
               <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
               <span>{t('WhatsApp Us', 'వాట్సాప్')}</span>
@@ -234,14 +219,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                   </button>
                 );
               })}
-
-              <button
-                onClick={() => handleNavClick('admin')}
-                className="w-full text-left px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-2 mt-2 pt-2 border-t border-slate-100"
-              >
-                <Lock className="w-3.5 h-3.5" />
-                <span>Admin Management Portal</span>
-              </button>
             </div>
 
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">

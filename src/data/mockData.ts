@@ -1,4 +1,4 @@
-import { Product, ServiceItem, SparePartItem, GalleryItem, ServiceBooking, CustomerEnquiry } from '../types';
+import { Product, ServiceItem, SparePartItem, GalleryItem } from '../types';
 
 export const BUSINESS_INFO = {
   brandName: "Priya's AquaFresh",
@@ -567,81 +567,4 @@ export const GALLERY_DATA: GalleryItem[] = [
   }
 ];
 
-export const INITIAL_BOOKINGS: ServiceBooking[] = [
-  {
-    id: "bk-1001",
-    reference: "LWP-2026-1001",
-    customerName: "Venkateshwarlu K.",
-    mobileNumber: "9848022341",
-    address: "Near Hanuman Temple, Main Road",
-    villageTown: "Raghunathpally",
-    serviceCategory: "Filter Replacement",
-    productType: "Domestic RO Water Purifier",
-    problemDescription: "Water flow has slowed down significantly over the last 2 weeks and taste changed.",
-    preferredDate: "2026-11-03",
-    preferredTime: "10:00 AM - 12:00 PM",
-    status: "Confirmed",
-    assignedTechnician: "Srinivas Rao",
-    technicianPhone: "9014357848",
-    notes: "Customer requested standard sediment and carbon filter change.",
-    createdAt: "2026-11-02T10:15:00.000Z"
-  },
-  {
-    id: "bk-1002",
-    reference: "LWP-2026-1002",
-    customerName: "Anitha Reddy",
-    mobileNumber: "9440182736",
-    address: "H.No 3-45, ZP High School Lane",
-    villageTown: "Khilashapur",
-    serviceCategory: "New Installation",
-    productType: "Priya's AquaFresh RO Purifier",
-    problemDescription: "New house installation required. Need wall mounting and inlet plumbing connection.",
-    preferredDate: "2026-11-04",
-    preferredTime: "02:00 PM - 04:00 PM",
-    status: "In Progress",
-    assignedTechnician: "Ramesh (Lead Technician)",
-    technicianPhone: "9014357848",
-    notes: "Drilling and plumbing accessories packed.",
-    createdAt: "2026-11-02T14:30:00.000Z"
-  },
-  {
-    id: "bk-1003",
-    reference: "LWP-2026-1003",
-    customerName: "Mallesh G.",
-    mobileNumber: "9177894561",
-    address: "Station Road, Opp. SBI",
-    villageTown: "Jangaon",
-    serviceCategory: "Water Leakage",
-    productType: "Under-sink RO Purifier",
-    problemDescription: "Water leaking from bottom elbow joint whenever pump switches on.",
-    preferredDate: "2026-11-03",
-    preferredTime: "04:00 PM - 06:00 PM",
-    status: "New",
-    createdAt: "2026-11-02T18:45:00.000Z"
-  }
-];
 
-export const INITIAL_ENQUIRIES: CustomerEnquiry[] = [
-  {
-    id: "enq-201",
-    reference: "ENQ-2026-001",
-    name: "Suresh Babu",
-    phone: "9866123450",
-    interest: "Priya's AquaFresh RO Purifier",
-    villageTown: "Raghunathpally",
-    message: "Interested in purchasing a domestic RO purifier with 1-year guarantee. Please call back.",
-    status: "New",
-    createdAt: "2026-11-02T12:00:00.000Z"
-  },
-  {
-    id: "enq-202",
-    reference: "ENQ-2026-002",
-    name: "Raju Naik",
-    phone: "9959871234",
-    interest: "AC Spare Parts (Compressor)",
-    villageTown: "Jangaon",
-    message: "Do you have 1.5 ton split AC rotary compressor in stock? Please share availability.",
-    status: "Contacted",
-    createdAt: "2026-11-02T15:20:00.000Z"
-  }
-];
