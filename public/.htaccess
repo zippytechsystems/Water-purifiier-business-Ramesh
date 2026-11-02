@@ -1,16 +1,40 @@
-# Apache configuration for Hostinger / cPanel Single-Page Application (SPA)
+# Priya's AquaFresh – Production Hostinger / cPanel Apache Configuration
+
+# 1. Force index.html as the primary directory index
+DirectoryIndex index.html index.php default.php
+
+# 2. Redirect 404 errors back to index.html (eliminates white screen / 404 errors)
+ErrorDocument 404 /index.html
+
+# 3. Explicit MIME types to prevent browser blocking ES Modules
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType text/css .css
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType application/manifest+json .webmanifest
+  AddType video/mp4 .mp4
+  AddType application/json .json
+</IfModule>
+
+# 4. Single-Page Application (SPA) URL Rewriting
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  # Direct access for Hostinger PHP REST API
-  RewriteCond %{REQUEST_URI} !^/api/
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+
+  # Serve existing file or directory directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Allow direct access to Hostinger PHP REST API
+  RewriteRule ^api/ - [L]
+
+  # Route everything else to index.html
+  RewriteRule ^ index.html [L]
 </IfModule>
 
-# Enable GZIP Compression for fast loading
+# 5. Enable GZIP Compression for ultra-fast mobile loading
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/plain
   AddOutputFilterByType DEFLATE text/html
@@ -26,7 +50,7 @@
   AddOutputFilterByType DEFLATE image/svg+xml
 </IfModule>
 
-# Browser Caching Headers for Assets
+# 6. Browser Caching Headers for Performance
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpg "access plus 1 year"
@@ -42,7 +66,7 @@
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 
-# Security Headers
+# 7. Security Headers
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
