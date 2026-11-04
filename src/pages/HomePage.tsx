@@ -30,7 +30,11 @@ import {
   Clock,
   Home,
   Download,
-  CalendarCheck
+  CalendarCheck,
+  HelpCircle,
+  Search,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -57,6 +61,52 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
   const [isHeroHovered, setIsHeroHovered] = useState(false);
   const heroTouchStartX = useRef<number | null>(null);
   const heroTouchEndX = useRef<number | null>(null);
+
+  // FAQ Accordion State & Search Keyword Questions for #1 Google Local Ranking
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const localFaqs = [
+    {
+      id: 'faq-1',
+      qEn: "Where can I get the best water purifier in Ragunadhpally & RO service?",
+      qTe: "రఘునాథపల్లిలో బెస్ట్ వాటర్ ప్యూరిఫైయర్ సేల్స్ & RO సర్వీస్ ఎక్కడ లభిస్తుంది?",
+      aEn: "Lasya Water Purifier (PURE Priya's AquaFresh) on Khilashapur Road, Raghunathpally (506244) is the #1 showroom & service center. We provide instant doorstep delivery, 1-Year Guarantee on new purifiers, filter replacement, and repairs within 30-60 minutes across Raghunathpally village. Call 9014357848 or WhatsApp 9182857848.",
+      aTe: "ఖిలాషాపూర్ రోడ్, రఘునాథపల్లి (506244) వద్ద ఉన్న లాస్య వాటర్ ప్యూరిఫైయర్ (ప్యూర్ ప్రియాస్ ఆక్వాఫ్రెష్) రఘునాథపల్లి మరియు పరిసర ప్రాంతాలలో అత్యంత నమ్మకమైన నెంబర్ 1 వాటర్ ప్యూరిఫైయర్ షోరూమ్. కొత్త మెషిన్లపై 1 ఇయర్ గ్యారంటీ, 30-60 నిమిషాల్లో డోర్‌స్టెప్ రిపేర్ & ఫిల్టర్ రీప్లేస్‌మెంట్ సదుపాయం కలదు. కాల్: 9014357848.",
+      whatsappText: "Hello Ramesh garu, I need Water Purifier Sales / Service in Ragunadhpally village."
+    },
+    {
+      id: 'faq-2',
+      qEn: "Do you provide water purifier sales and repair in Janagoan and surrounding circle?",
+      qTe: "జనగామ మరియు చుట్టుపక్కల సర్కిల్‌లో వాటర్ ప్యూరిఫైయర్ సేల్స్ మరియు సర్వీస్ అందిస్తారా?",
+      aEn: "Yes, Lasya Water Purifier provides prompt doorstep sales, installation, and repair across Jangaon town and the total Jangaon circle including Station Ghanpur, Zaffergadh, Lingala Ghanpur, Bachannapet, and Devaruppula. Genuine RO membranes, filters, and booster pumps always in stock.",
+      aTe: "అవును, జనగామ టౌన్ మరియు జనగామ సర్కిల్ మొత్తానికి (స్టేషన్ ఘన్‌పూర్, జాఫర్‌గఢ్, లింగాల ఘన్‌పూర్, బచ్చన్నపేట, దేవరుప్పుల) వేగవంతమైన డోర్‌స్టెప్ వాటర్ ప్యూరిఫైయర్ సర్వీస్, అసలైన ఫిల్టర్ల మార్పిడి మరియు కొత్త మెషీన్ల డెలివరీ అందిస్తున్నాము.",
+      whatsappText: "Hello Ramesh garu, I need Water Purifier Sales / Service in Jangaon circle."
+    },
+    {
+      id: 'faq-3',
+      qEn: "How to find near by water purify and repair service in Raghunathpally circle?",
+      qTe: "రఘునాథపల్లి సర్కిల్‌లో దగ్గరలో ఉన్న (Near By) వాటర్ ప్యూరిఫైయర్ సర్వీస్ ఎలా బుక్ చేయాలి?",
+      aEn: "If you search for 'near by water purify' or 'water purifier repair near me' in Raghunathpally or Jangaon circle, Lasya Water Purifier on Khilashapur Road is your closest direct service center. Simply call 9014357848 or send a WhatsApp message to 9182857848 for a 30-minute technician dispatch.",
+      aTe: "రఘునాథపల్లి లేదా జనగామ సర్కిల్ లో మీ ఇంటికి దగ్గరలో నమ్మకమైన వాటర్ ప్యూరిఫైయర్ సర్వీస్ కావాలంటే, ఖిలాషాపూర్ రోడ్డులోని లాస్య వాటర్ ప్యూరిఫైయర్ కు కాల్ 9014357848 లేదా వాట్సాప్ 9182857848 ద్వారా వెంటనే టెక్నీషియన్‌ను బుక్ చేసుకోవచ్చు.",
+      whatsappText: "Hello Ramesh garu, I am looking for near by water purifier technician."
+    },
+    {
+      id: 'faq-4',
+      qEn: "Which villages are covered in the total Raghunathpally circle?",
+      qTe: "టోటల్ రఘునాథపల్లి సర్కిల్‌లోని ఏయే గ్రామాలకు డోర్‌స్టెప్ సర్వీస్ వస్తుంది?",
+      aEn: "We provide 100% doorstep coverage for all villages across Raghunathpally mandal and circle, including Raghunathpally village, Khilashapur Road, Kanchanpally, Madharam, Ashwaraopally, Gabbeta, Veldi, Ibrahimbad, Kaloor, Kodavatoor, Mundrai, and Nidigonda with free water TDS testing.",
+      aTe: "రఘునాథపల్లి విలేజ్, ఖిలాషాపూర్, కంచనపల్లి, మాదారం, అశ్వరావుపల్లి, గబ్బెట, వెల్ది, ఇబ్రహీంబాద్, కాలూర్, కొడవటూరు, ముండ్రాయి, నిడిగొండ సహా రఘునాథపల్లి సర్కిల్‌లోని ప్రతి గ్రామానికి మా డోర్‌స్టెప్ టెక్నీషియన్ సర్వీస్ అందుబాటులో ఉంటుంది.",
+      whatsappText: "Hello Ramesh garu, I need RO Service in my village in Raghunathpally circle."
+    },
+    {
+      id: 'faq-5',
+      qEn: "What warranty and service guarantee do you provide on new water purifiers?",
+      qTe: "కొత్త వాటర్ ప్యూరిఫైయర్లపై ఎలాంటి గ్యారంటీ & సర్వీస్ సపోర్ట్ ఉంటుంది?",
+      aEn: "We provide an official 1-Year Guarantee on qualifying domestic and commercial water purifiers, along with free doorstep installation, water TDS testing, 100% original RO membranes, and dependable post-sales support directly from our Raghunathpally showroom.",
+      aTe: "మేము అందించే అన్ని డొమెస్టిక్ మరియు కమర్షియల్ వాటర్ ప్యూరిఫైయర్లపై 1 ఇయర్ అధికారిక గ్యారంటీ, ఉచిత ఇన్స్టాలేషన్, వాటర్ TDS టెస్టింగ్ మరియు 100% అసలైన RO స్పేర్ పార్ట్స్ గ్యారంటీ ఇవ్వబడును.",
+      whatsappText: "Hello Ramesh garu, I want to know about 1-Year Guarantee Water Purifiers."
+    }
+  ];
 
   // 4 Featured Showcase Slides for Water Purifiers & Services
   const heroSlides = [
@@ -373,7 +423,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
               {/* Trust Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-semibold shadow-inner backdrop-blur-md">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>{t("PURE (Priya's AquaFresh) – #1 Water Purifier Sales & Services", "ప్యూర్ (PURE) – లాస్య వాటర్ ప్యూరిఫైయర్ సేల్స్ & సర్వీసెస్ | రఘునాథపల్లి")}</span>
+                <span>{t("Lasya Water Purifier – #1 in Ragunadhpally & Jangaon Circle", "లాస్య వాటర్ ప్యూరిఫైయర్ – రఘునాథపల్లి & జనగామ సర్కిల్ #1")}</span>
               </div>
 
               {/* Main Headline */}
@@ -1214,6 +1264,159 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
 
             <p className="text-[11px] sm:text-xs text-slate-500 max-w-4xl mx-auto leading-relaxed border-t border-slate-800/80 pt-3">
               <strong>Serving Locations:</strong> Raghunathpally (506244), Khilashapur Road, Jangaon Town (506167), Kanchanpally, Madharam, Ashwaraopally, Gabbeta, Veldi, Ibrahimbad, Kaloor, Kodavatoor, Mundrai, Station Ghanpur (506144), Zaffergadh (506316), Lingala Ghanpur, Bachannapet (506302), Devaruppula, Tarigoppula, Telangana.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ======================================================= */}
+      {/* SECTION 9.5: LOCAL SEO SEARCH DIRECTORY & FAQS          */}
+      {/* Targeted for Google #1 Ranking for Ragunadhpally & Jangaon */}
+      {/* ======================================================= */}
+      <section id="faqs" className="py-20 bg-slate-900 text-white scroll-defer relative overflow-hidden border-t border-slate-800">
+        {/* Ambient background glows */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-semibold shadow-inner">
+              <Search className="w-4 h-4 text-cyan-400" />
+              <span>{t("Google Search & Local FAQ Directory", "గూగుల్ సెర్చ్ & స్థానిక సందేహాలు - సమాధానాలు")}</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+              {t(
+                "Water Purifier in Ragunadhpally & Jangaon Circle",
+                "రఘునాథపల్లి & జనగామ సర్కిల్‌లో వాటర్ ప్యూరిఫైయర్ సేల్స్ & సర్వీస్"
+              )}
+            </h2>
+
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+              {t(
+                "Searching for 'near by water purify', 'water purifier in ragunadhpally', or 'water purifier in janagoan'? Lasya Water Purifier provides 30-minute doorstep service, 1-Year Guarantee, and original filter replacements across all neighboring circle villages.",
+                "మీరు 'దగ్గరలోని వాటర్ ప్యూరిఫైయర్' లేదా 'రఘునాథపల్లి, జనగామలో వాటర్ ప్యూరిఫైయర్ సర్వీస్' కోసం వెతుకుతున్నారా? లాస్య వాటర్ ప్యూరిఫైయర్ ద్వారా 30 నిమిషాల్లో డోర్‌స్టెప్ రిపేర్ మరియు 1 ఇయర్ గ్యారంటీ మెషీన్లు లభిస్తాయి."
+              )}
+            </p>
+          </div>
+
+          {/* Quick Search Intent Keyword Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 mb-12">
+            {[
+              {
+                label: "📍 Water Purifier in Ragunadhpally Village",
+                msg: "Hello Ramesh garu, I need a water purifier in Ragunadhpally village."
+              },
+              {
+                label: "📍 Water Purifier in Janagoan / Jangaon Circle",
+                msg: "Hello Ramesh garu, I need water purifier sales/service in Jangaon circle."
+              },
+              {
+                label: "📍 Near By Water Purify Doorstep Service",
+                msg: "Hello Ramesh garu, I need near by water purifier doorstep service."
+              },
+              {
+                label: "📍 Total Raghunathpally Circle (30-Min Visit)",
+                msg: "Hello Ramesh garu, I am from Raghunathpally circle and need RO technician visit."
+              },
+              {
+                label: "📍 Khilashapur Road Showroom & Spares",
+                msg: "Hello Ramesh garu, I want to visit your showroom on Khilashapur Road."
+              },
+              {
+                label: "📍 1-Year Guarantee RO + UV + Alkaline Purifiers",
+                msg: "Hello Ramesh garu, I want to buy 1-Year Guarantee RO Purifier."
+              }
+            ].map((badge, bIdx) => (
+              <a
+                key={bIdx}
+                href={`https://wa.me/${BUSINESS_INFO.whatsapp}?text=${encodeURIComponent(badge.msg)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-800/90 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 border border-slate-700 hover:border-cyan-400 transition-all shadow-sm flex items-center gap-1.5"
+              >
+                <span>{badge.label}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Accordion FAQ Cards Grid */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            {localFaqs.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div
+                  key={faq.id}
+                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                    isOpen
+                      ? 'bg-slate-800/90 border-cyan-500/60 shadow-lg shadow-cyan-500/10'
+                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
+                    aria-expanded={isOpen}
+                  >
+                    <div className="flex items-start gap-3.5">
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+                        isOpen ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-800 text-cyan-400'
+                      }`}>
+                        <HelpCircle className="w-4 h-4" />
+                      </div>
+                      <h3 className="font-bold text-white text-base sm:text-lg leading-snug">
+                        {isTelugu ? faq.qTe : faq.qEn}
+                      </h3>
+                    </div>
+                    <div className="shrink-0 text-slate-400">
+                      {isOpen ? (
+                        <ChevronUp className="w-5 h-5 text-cyan-400" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5" />
+                      )}
+                    </div>
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-5 pb-5 pt-1 text-slate-300 text-sm sm:text-base leading-relaxed border-t border-slate-700/50 space-y-4">
+                      <p className="pt-2">
+                        {isTelugu ? faq.aTe : faq.aEn}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-3 pt-2">
+                        <a
+                          href={`https://wa.me/${BUSINESS_INFO.whatsapp}?text=${encodeURIComponent(faq.whatsappText)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-colors"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                          <span>{t("Enquire on WhatsApp", "వాట్సాప్ లో అడగండి")}</span>
+                        </a>
+
+                        <a
+                          href={`tel:${BUSINESS_INFO.phone}`}
+                          className="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs flex items-center gap-1.5 transition-colors"
+                        >
+                          <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>Call: {BUSINESS_INFO.phone}</span>
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom Help Notice */}
+          <div className="mt-12 text-center text-xs text-slate-400">
+            <p>
+              {t(
+                "Need urgent doorstep service in Raghunathpally or Jangaon circle? Call Ramesh garu directly at 9014357848.",
+                "రఘునాథపల్లి లేదా జనగామ సర్కిల్‌లో తక్షణ వాటర్ ప్యూరిఫైయర్ సర్వీస్ కోసం రమేష్ గారికి కాల్ చేయండి: 9014357848."
+              )}
             </p>
           </div>
         </div>

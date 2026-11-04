@@ -13,4 +13,4 @@ Allow: /images/
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://priyasaquafresh.com/sitemap.xml
+Sitemap: https://lasyawaterpurifier.store/sitemap.xml
