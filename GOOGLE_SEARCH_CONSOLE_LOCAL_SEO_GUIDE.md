@@ -1,4 +1,4 @@
-# Lasya Water Purifier (lasyawaterpurifier.store)
+# Lasya Water Purifier (lasyawaterpurifiers.store)
 ## Google Search Console & Local SEO Complete Setup Guide
 **Target Ranking:** #1 on Google Search & Google Maps for:
 - "water purifier in ragunadhpally"
@@ -13,11 +13,11 @@
 ## 1. What Has Been Configured in Website Code
 
 1. **New Domain Configured Across Codebase:**
-   - Canonical URL: `https://lasyawaterpurifier.store/`
-   - OpenGraph & Twitter Meta Tags: `https://lasyawaterpurifier.store/`
-   - Sitemap: `https://lasyawaterpurifier.store/sitemap.xml`
-   - Robots.txt: Googlebot & Bingbot allowed, referencing `https://lasyawaterpurifier.store/sitemap.xml`
-   - Manifest: `lasyawaterpurifier.store`
+   - Canonical URL: `https://lasyawaterpurifiers.store/`
+   - OpenGraph & Twitter Meta Tags: `https://lasyawaterpurifiers.store/`
+   - Sitemap: `https://lasyawaterpurifiers.store/sitemap.xml`
+   - Robots.txt: Googlebot & Bingbot allowed, referencing `https://lasyawaterpurifiers.store/sitemap.xml`
+   - Manifest: `lasyawaterpurifiers.store`
 
 2. **Hyper-Targeted Local SEO Meta Tags:**
    - `<title>Lasya Water Purifier | #1 Water Purifier in Ragunadhpally &amp; Jangaon Circle – Doorstep RO Service</title>`
@@ -46,8 +46,8 @@
 ### Step 2: Add Your Domain Property
 1. Click **+ Add Property** (top-left dropdown).
 2. Choose **URL prefix**:
-   Enter: `https://lasyawaterpurifier.store/`
-   *(Or choose Domain: `lasyawaterpurifier.store` if you prefer DNS TXT verification on Hostinger)*.
+   Enter: `https://lasyawaterpurifiers.store/`
+   *(Or choose Domain: `lasyawaterpurifiers.store` if you prefer DNS TXT verification on Hostinger)*.
 3. Click **Continue**.
 
 ### Step 3: Verify Ownership
@@ -67,13 +67,13 @@ Choose one of the following methods:
 1. In the left navigation menu of Google Search Console, click on **Sitemaps**.
 2. In the "Add a new sitemap" input, enter:
    `sitemap.xml`
-   (Full URL: `https://lasyawaterpurifier.store/sitemap.xml`)
+   (Full URL: `https://lasyawaterpurifiers.store/sitemap.xml`)
 3. Click **Submit**.
 4. You will see status **"Success"**. Google will start crawling and indexing all pages and images.
 
 ### Step 5: Request Instant Indexing
-1. At the top search bar of Google Search Console ("Inspect any URL in https://lasyawaterpurifier.store/"):
-2. Type `https://lasyawaterpurifier.store/` and press **Enter**.
+1. At the top search bar of Google Search Console ("Inspect any URL in https://lasyawaterpurifiers.store/"):
+2. Type `https://lasyawaterpurifiers.store/` and press **Enter**.
 3. Click **Request Indexing**.
 4. Repeat for key anchors if desired (e.g., `#water-purifiers`, `#services`).
 
@@ -101,7 +101,7 @@ To secure position #1 on Google Maps:
    - Kaloor & Kodavatoor
    - Station Ghanpur
    - Zaffergadh
-6. Website Link: `https://lasyawaterpurifier.store/`
+6. Website Link: `https://lasyawaterpurifiers.store/`
 7. Phone: `+91 9014357848`
 8. Photos: Upload the showroom photos from `/images/brand/` and product images.
 

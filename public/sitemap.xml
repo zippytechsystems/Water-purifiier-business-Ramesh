@@ -5,18 +5,18 @@
   
   <!-- Primary Canonical Website Homepage with Video & Images for Google Ranking #1 -->
   <url>
-    <loc>https://lasyawaterpurifier.store/</loc>
+    <loc>https://lasyawaterpurifiers.store/</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     
     <!-- Official Promotional Showroom Video for Google Video Search -->
     <video:video>
-      <video:thumbnail_loc>https://lasyawaterpurifier.store/images/gallery/frame-04-purifier-display.png</video:thumbnail_loc>
+      <video:thumbnail_loc>https://lasyawaterpurifiers.store/images/gallery/frame-04-purifier-display.png</video:thumbnail_loc>
       <video:title>Lasya Water Purifier – #1 Water Purifier Showroom &amp; RO Service in Ragunadhpally, Jangaon</video:title>
       <video:description>Official video demonstration of domestic and commercial RO water purifiers, showroom collection, filter replacement, and doorstep service on Khilashapur Road, Raghunathpally village &amp; Jangaon circle.</video:description>
-      <video:content_loc>https://lasyawaterpurifier.store/videos/promotional-video.mp4</video:content_loc>
-      <video:player_loc>https://lasyawaterpurifier.store/#gallery</video:player_loc>
+      <video:content_loc>https://lasyawaterpurifiers.store/videos/promotional-video.mp4</video:content_loc>
+      <video:player_loc>https://lasyawaterpurifiers.store/#gallery</video:player_loc>
       <video:duration>35</video:duration>
       <video:publication_date>2026-10-01T08:00:00+05:30</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
@@ -25,22 +25,22 @@
 
     <!-- Key Product & Brand Images for Google Images -->
     <image:image>
-      <image:loc>https://lasyawaterpurifier.store/images/brand/pure-logo.svg</image:loc>
+      <image:loc>https://lasyawaterpurifiers.store/images/brand/pure-logo.svg</image:loc>
       <image:title>Lasya Water Purifier – PURE AquaFresh Brand Logo</image:title>
       <image:caption>Official Brand Identity of Lasya Water Purifier Sales &amp; Services in Ragunadhpally</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://lasyawaterpurifier.store/images/brand/business-poster.jpg</image:loc>
+      <image:loc>https://lasyawaterpurifiers.store/images/brand/business-poster.jpg</image:loc>
       <image:title>Water Purifier in Ragunadhpally – Showroom on Khilashapur Road</image:title>
       <image:caption>Lasya Water Purifier Sales, Service, 1 Year Guarantee and Doorstep Support in Jangaon Circle</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://lasyawaterpurifier.store/images/brand/hero-water-purifiers.jpg</image:loc>
+      <image:loc>https://lasyawaterpurifiers.store/images/brand/hero-water-purifiers.jpg</image:loc>
       <image:title>Domestic and Commercial RO Water Purifiers in Raghunathpally, Jangaon</image:title>
       <image:caption>Multi-stage RO, UV, Copper, and Alkaline Water Purifiers with 1 Year Guarantee in Telangana</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://lasyawaterpurifier.store/images/products/water-purifiers/priya-aquafresh-sleek-ro.png</image:loc>
+      <image:loc>https://lasyawaterpurifiers.store/images/products/water-purifiers/priya-aquafresh-sleek-ro.png</image:loc>
       <image:title>Lasya Water Purifier – AquaFresh Sleek Wall Mount RO</image:title>
       <image:caption>Wall mount domestic water purifier with high recovery membrane and mineral balance</image:caption>
     </image:image>
@@ -48,7 +48,7 @@
 
   <!-- Water Purifiers Catalogue -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#water-purifiers</loc>
+    <loc>https://lasyawaterpurifiers.store/#water-purifiers</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
@@ -56,7 +56,7 @@
 
   <!-- Services & Doorstep Repair -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#services</loc>
+    <loc>https://lasyawaterpurifiers.store/#services</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
@@ -64,7 +64,7 @@
 
   <!-- Online Service Booking Portal -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#service-booking</loc>
+    <loc>https://lasyawaterpurifiers.store/#service-booking</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
@@ -72,7 +72,7 @@
 
   <!-- Service Areas & Local Coverage (Ragunadhpally, Jangaon, Khilashapur & Circle Villages) -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#service-areas</loc>
+    <loc>https://lasyawaterpurifiers.store/#service-areas</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
@@ -80,7 +80,7 @@
 
   <!-- Customer Reviews & Ratings -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#reviews</loc>
+    <loc>https://lasyawaterpurifiers.store/#reviews</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
@@ -88,7 +88,7 @@
 
   <!-- Genuine Spare Parts & AC Spares -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#spare-parts</loc>
+    <loc>https://lasyawaterpurifiers.store/#spare-parts</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -96,7 +96,7 @@
 
   <!-- Showroom Gallery & Video Demonstration -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#gallery</loc>
+    <loc>https://lasyawaterpurifiers.store/#gallery</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -104,7 +104,7 @@
 
   <!-- Home Appliances & Air Coolers -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#appliances</loc>
+    <loc>https://lasyawaterpurifiers.store/#appliances</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
@@ -112,7 +112,7 @@
 
   <!-- About Us & Business Credentials (GSTIN: 36ETWPA6540J1Z7) -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#about</loc>
+    <loc>https://lasyawaterpurifiers.store/#about</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
@@ -120,7 +120,7 @@
 
   <!-- Contact & Google Maps Directions (Khilashapur Road, Raghunathpally) -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#contact</loc>
+    <loc>https://lasyawaterpurifiers.store/#contact</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -128,7 +128,7 @@
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://lasyawaterpurifier.store/#privacy</loc>
+    <loc>https://lasyawaterpurifiers.store/#privacy</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.30</priority>

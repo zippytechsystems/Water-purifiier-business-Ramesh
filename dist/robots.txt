@@ -13,4 +13,4 @@ Allow: /images/
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://lasyawaterpurifier.store/sitemap.xml
+Sitemap: https://lasyawaterpurifiers.store/sitemap.xml
