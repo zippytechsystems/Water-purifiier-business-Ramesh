@@ -235,18 +235,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span>{t('Contact & Store Location', 'షాప్ అడ్రస్ & సంప్రదింపులు')}</span>
             </h4>
 
-            <div className="space-y-3 text-sm text-slate-400">
+            <div className="space-y-3 text-sm text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-white font-medium">Khilashapur Road</p>
-                  <p className="text-xs text-slate-400">Village & Mandal: Raghunathpally</p>
-                  <p className="text-xs text-slate-400">District: Jangaon, Telangana, India</p>
+                  <p className="text-xs text-slate-300">Village & Mandal: Raghunathpally</p>
+                  <p className="text-xs text-slate-300">District: Jangaon, Telangana, India</p>
                   <a 
                     href={BUSINESS_INFO.directionsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-cyan-400 hover:underline mt-1 font-semibold"
+                    className="inline-flex items-center gap-1 text-xs text-cyan-300 hover:underline mt-1 font-semibold"
                   >
                     <span>Get Google Map Directions</span>
                     <ExternalLink className="w-3 h-3" />
@@ -255,10 +255,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </div>
 
               <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-cyan-400 shrink-0" />
+                <Phone className="w-4 h-4 text-cyan-300 shrink-0" />
                 <div>
-                  <span className="text-xs text-slate-400 block">Calling Number:</span>
-                  <a href={`tel:${BUSINESS_INFO.phone}`} className="text-white font-bold hover:text-cyan-400">
+                  <span className="text-xs text-slate-300 block">Calling Number:</span>
+                  <a href={`tel:${BUSINESS_INFO.phone}`} className="text-white font-bold hover:text-cyan-300">
                     {BUSINESS_INFO.phone}
                   </a>
                 </div>
@@ -267,7 +267,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <div className="flex items-center gap-2.5">
                 <MessageCircle className="w-4 h-4 text-emerald-400 shrink-0" />
                 <div>
-                  <span className="text-xs text-slate-400 block">WhatsApp Business:</span>
+                  <span className="text-xs text-slate-300 block">WhatsApp Business:</span>
                   <a 
                     href={getGeneralWhatsAppUrl(isTelugu)}
                     target="_blank"
@@ -280,10 +280,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </div>
 
               <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-slate-400 shrink-0" />
+                <Clock className="w-4 h-4 text-slate-300 shrink-0" />
                 <div>
-                  <span className="text-xs text-slate-400 block">Store Working Hours:</span>
-                  <span className="text-xs text-slate-300">Mon - Sun: 8:00 AM - 9:00 PM</span>
+                  <span className="text-xs text-slate-300 block">Store Working Hours:</span>
+                  <span className="text-xs text-slate-200">Mon - Sun: 8:00 AM - 9:00 PM</span>
                 </div>
               </div>
             </div>
@@ -291,12 +291,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Bottom Strip: Copyright & Disclaimers */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p className="text-center md:text-left">
-            © {new Date().getFullYear()} <strong className="text-slate-400">Priya's AquaFresh – Lasya Water Purifier Sales & Services</strong>. All Rights Reserved.
+            © {new Date().getFullYear()} <strong className="text-slate-200">Priya's AquaFresh – Lasya Water Purifier Sales & Services</strong>. All Rights Reserved.
           </p>
 
-          <p className="text-center md:text-right text-[11px] max-w-xl text-slate-500 leading-normal">
+          <p className="text-center md:text-right text-[11px] max-w-xl text-slate-400 leading-normal">
             * Note: The 1-Year Guarantee mentioned on business promotional materials applies to eligible models and services as per business warranty terms. Service area covers Raghunathpally, Jangaon, and neighboring villages.
           </p>
         </div>

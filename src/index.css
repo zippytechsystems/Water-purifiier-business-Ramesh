@@ -210,17 +210,19 @@ html.lenis body {
   animation: rippleWave 3s ease-in-out infinite;
 }
 
-/* Hero Carousel Progress Bar Animation */
+/* Hero Carousel Progress Bar Animation (GPU Composited - Zero Reflow) */
 @keyframes heroProgress {
   0% {
-    width: 0%;
+    transform: scaleX(0);
   }
   100% {
-    width: 100%;
+    transform: scaleX(1);
   }
 }
 
 .animate-hero-progress {
+  transform-origin: left;
+  will-change: transform;
   animation: heroProgress 4.5s linear infinite;
 }
 

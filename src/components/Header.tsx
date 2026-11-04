@@ -239,9 +239,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenI
               href={getGeneralWhatsAppUrl(isTelugu)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 xl:px-4 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
+              className="flex items-center gap-1.5 px-3 xl:px-4 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-md hover:shadow-emerald-700/25 transition-all transform hover:-translate-y-0.5"
             >
-              <MessageCircle className="w-3.5 h-3.5 xl:w-4 xl:h-4 fill-white text-emerald-600" />
+              <MessageCircle className="w-3.5 h-3.5 xl:w-4 xl:h-4 fill-white text-emerald-700" />
               <span>{t('WhatsApp Us', 'వాట్సాప్')}</span>
             </a>
           </div>
@@ -263,11 +263,11 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenI
               href={getGeneralWhatsAppUrl(isTelugu)}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors sm:hidden shadow-sm"
+              className="p-2 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 transition-colors sm:hidden shadow-sm"
               title="WhatsApp Store"
               aria-label="WhatsApp Contact"
             >
-              <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+              <MessageCircle className="w-4 h-4 fill-white text-emerald-700" />
             </a>
 
             {/* Mobile Menu Drawer Toggle */}
@@ -327,9 +327,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenI
                   href={getDirectWhatsAppBookingUrl(isTelugu)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="col-span-2 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors shadow-xs"
+                  className="col-span-2 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 transition-colors shadow-xs"
                 >
-                  <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                  <MessageCircle className="w-4 h-4 fill-white text-emerald-700" />
                   <span>{isTelugu ? 'వాట్సాప్ బుకింగ్ (WhatsApp Booking)' : 'WhatsApp Booking'}</span>
                 </a>
               </div>

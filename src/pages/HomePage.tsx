@@ -155,7 +155,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
     },
     {
       id: 'slide-4',
-      image: '/images/brand/purifier-service-slide-4.jpg',
+      image: '/images/brand/purifier-hero-slide-4.jpg',
       badgeEn: 'Doorstep Service • Raghunathpally & Jangaon',
       badgeTe: 'డోర్‌స్టెప్ సర్వీస్ • రఘునాథపల్లి & జనగామ',
       titleEn: 'Expert Doorstep Service & Maintenance',
@@ -260,12 +260,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
               }`}
               aria-hidden={!isActive}
             >
-              {/* Background Purifier Image */}
+              {/* Background Purifier Image with High-Priority LCP for Slide 1 */}
               <img
                 src={slide.image}
                 alt={slide.titleEn}
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 loading={idx === 0 ? "eager" : "lazy"}
+                fetchPriority={idx === 0 ? "high" : "low"}
+                width="1200"
+                height="800"
               />
               
               {/* Multilayer gradient scrims for pristine text contrast */}
@@ -288,24 +291,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                       <Droplets className="w-3.5 h-3.5 text-cyan-300" />
                       <span>{isTelugu ? 'ప్యూర్ ఆక్వాఫ్రెష్' : "Priya's AquaFresh Collection"}</span>
                     </p>
-                    <h3 className="text-white text-base sm:text-lg lg:text-xl font-extrabold leading-snug">
+                    <p className="text-white text-base sm:text-lg lg:text-xl font-extrabold leading-snug">
                       {isTelugu ? slide.titleTe : slide.titleEn}
-                    </h3>
+                    </p>
                     <p className="text-slate-300 text-xs leading-relaxed line-clamp-2">
                       {isTelugu ? slide.highlightTe : slide.highlightEn}
                     </p>
                   </div>
 
-                  {/* Direct Action Button on Slide */}
+                  {/* Direct Action Button on Slide with Strict Focus Control */}
                   <div className="shrink-0 flex items-center gap-2">
                     {slide.isWhatsApp ? (
                       <a
                         href={getGeneralWhatsAppUrl(isTelugu)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all flex items-center gap-1.5"
+                        tabIndex={isActive ? 0 : -1}
+                        aria-label={`WhatsApp Enquiry: ${slide.titleEn}`}
+                        className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-md transition-all flex items-center gap-1.5"
                       >
-                        <MessageCircle className="w-3.5 h-3.5 fill-white text-emerald-600" />
+                        <MessageCircle className="w-3.5 h-3.5 fill-white text-emerald-700" />
                         <span>{isTelugu ? 'వాట్సాప్' : 'WhatsApp'}</span>
                       </a>
                     ) : (
@@ -314,6 +319,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                           onNavigate(slide.targetPage);
                           scrollToTop(false);
                         }}
+                        tabIndex={isActive ? 0 : -1}
+                        aria-label={`${slide.ctaTextEn}: ${slide.titleEn}`}
                         className="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
                       >
                         <span>{isTelugu ? slide.ctaTextTe : slide.ctaTextEn}</span>
@@ -372,12 +379,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                 key={dotIdx}
                 onClick={() => setHeroSlide(dotIdx)}
                 aria-label={`Go to slide ${dotIdx + 1}`}
-                className={`transition-all duration-300 rounded-full cursor-pointer ${
-                  dotIdx === heroSlide
-                    ? 'w-7 sm:w-8 h-1.5 bg-gradient-to-r from-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]'
-                    : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/80'
-                }`}
-              />
+                className="p-2 flex items-center justify-center cursor-pointer focus:outline-none"
+              >
+                <span
+                  className={`block transition-all duration-300 rounded-full ${
+                    dotIdx === heroSlide
+                      ? 'w-7 sm:w-8 h-1.5 bg-gradient-to-r from-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]'
+                      : 'w-2 h-1.5 bg-white/40 hover:bg-white/80'
+                  }`}
+                />
+              </button>
             ))}
           </div>
           <div className="h-3 w-px bg-white/20 mx-0.5"></div>
@@ -495,9 +506,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                   href={getGeneralWhatsAppUrl(isTelugu)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3.5 rounded-xl text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg hover:shadow-emerald-600/30 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+                  aria-label="Contact Lasya Water Purifier on WhatsApp"
+                  className="px-6 py-3.5 rounded-xl text-sm font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg hover:shadow-emerald-700/30 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
                 >
-                  <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
+                  <MessageCircle className="w-4 h-4 fill-white text-emerald-700" />
                   <span>{t("WhatsApp Us", "వాట్సాప్")}</span>
                 </a>
               </div>
@@ -702,7 +714,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-600 mb-1.5 block">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-800 mb-1.5 block">
                 {t("Product Catalogue", "మా ప్రాడక్ట్స్")}
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
@@ -731,6 +743,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                     alt={product.nameEn}
                     loading="lazy"
                     decoding="async"
+                    width="400"
+                    height="300"
                     className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   {product.badge && (
@@ -739,7 +753,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                     </span>
                   )}
                   {product.warrantyEn && (
-                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
                       1 Year Guaranty
                     </span>
                   )}
@@ -748,10 +762,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                 {/* Content */}
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-600 block mb-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-800 block mb-1">
                       {product.subCategory || product.category}
                     </span>
-                    <h3 className="font-bold text-slate-900 text-base mb-2 group-hover:text-cyan-600 transition-colors">
+                    <h3 className="font-bold text-slate-900 text-base mb-2 group-hover:text-cyan-700 transition-colors">
                       {isTelugu ? product.nameTe : product.nameEn}
                     </h3>
                     <p className="text-xs text-slate-600 line-clamp-3 mb-4 leading-relaxed">
@@ -766,9 +780,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                       href={getProductWhatsAppUrl(product, isTelugu)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+                      aria-label={`Enquire about ${product.nameEn} on WhatsApp`}
+                      className="w-full py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-colors"
                     >
-                      <MessageCircle className="w-3.5 h-3.5 fill-white text-emerald-600" />
+                      <MessageCircle className="w-3.5 h-3.5 fill-white text-emerald-700" />
                       <span>{t("Enquire on WhatsApp", "వాట్సాప్ లో ధర అడగండి")}</span>
                     </a>
 
@@ -802,7 +817,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
       <section className="py-20 bg-white scroll-defer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-600 mb-2 block">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-800 mb-2 block">
               {t("Professional Solutions", "మా సేవలు")}
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
@@ -851,7 +866,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                     href={getServiceEnquiryWhatsAppUrl(service.titleEn, isTelugu)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-2 rounded-xl border border-emerald-600/40 text-emerald-700 hover:bg-emerald-50 text-xs font-semibold text-center flex items-center justify-center gap-1.5 transition-colors"
+                    aria-label={`WhatsApp Enquiry for ${service.titleEn}`}
+                    className="w-full py-2 rounded-xl border border-emerald-700/50 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold text-center flex items-center justify-center gap-1.5 transition-colors"
                   >
                     <MessageCircle className="w-3.5 h-3.5" />
                     <span>WhatsApp Enquiry</span>
@@ -1016,13 +1032,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
               poster="/images/gallery/frame-04-purifier-display.png"
               playsInline
               loop
-              preload="metadata"
+              preload="none"
               muted={isMuted}
               controls
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               className="w-full max-h-[580px] object-contain bg-black"
-            />
+            >
+              <track kind="captions" src="/videos/captions.vtt" srcLang="en" label="English" default />
+            </video>
 
             {/* Custom Overlay Controls */}
             {!isPlaying && (
@@ -1057,7 +1075,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
       <section className="py-20 bg-slate-50 scroll-defer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-600 mb-2 block">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-800 mb-2 block">
               {t("Customer Reviews & Ratings", "కస్టమర్ల అభిప్రాయాలు & రేటింగ్స్")}
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">
@@ -1085,7 +1103,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                         <Star key={idx} className="w-4 h-4 fill-amber-400" />
                       ))}
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200">
                       Verified
                     </span>
                   </div>
@@ -1098,13 +1116,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                 </div>
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-slate-900 text-sm">{rev.customerName}</h4>
-                    <p className="text-xs text-slate-500 flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-cyan-500" />
+                    <p className="font-bold text-slate-900 text-sm">{rev.customerName}</p>
+                    <p className="text-xs text-slate-600 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-cyan-800" />
                       <span>{rev.villageTown}</span>
                     </p>
                   </div>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-600 font-medium">
                     {rev.createdAt}
                   </span>
                 </div>
@@ -1220,7 +1238,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                       href={`https://wa.me/${BUSINESS_INFO.whatsapp}?text=Hello%20Ramesh%20garu,%20I%20am%20from%20${encodeURIComponent(area.nameEn)}.%20I%20need%20Water%20Purifier%20Service%20or%20New%20Machine.`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                      aria-label={`Book Water Purifier Service in ${area.nameEn} on WhatsApp`}
+                      className="flex-1 py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <MessageCircle className="w-3.5 h-3.5 fill-white" />
                       <span>{t("Book in " + area.nameEn.split(' ')[0], area.nameTe.split(' ')[0] + " లో బుకింగ్")}</span>
@@ -1229,7 +1248,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                     <a
                       href={`tel:${BUSINESS_INFO.phone}`}
                       className="py-2 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold flex items-center justify-center transition-colors"
-                      title="Call Technician"
+                      title={`Call Technician for ${area.nameEn}`}
+                      aria-label={`Call Technician for ${area.nameEn}`}
                     >
                       <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
                     </a>
@@ -1389,7 +1409,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
                           href={`https://wa.me/${BUSINESS_INFO.whatsapp}?text=${encodeURIComponent(faq.whatsappText)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-colors"
+                          aria-label={`Ask on WhatsApp: ${faq.qEn}`}
+                          className="px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-colors"
                         >
                           <MessageCircle className="w-3.5 h-3.5 fill-white" />
                           <span>{t("Enquire on WhatsApp", "వాట్సాప్ లో అడగండి")}</span>
@@ -1445,7 +1466,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
               href={`tel:${BUSINESS_INFO.phone}`}
               className="px-6 py-3.5 rounded-xl bg-white text-slate-950 font-bold text-sm shadow-xl hover:bg-slate-100 transition-transform hover:-translate-y-0.5 flex items-center gap-2"
             >
-              <PhoneCall className="w-4 h-4 text-cyan-600" />
+              <PhoneCall className="w-4 h-4 text-cyan-800" />
               <span>Call Now: {BUSINESS_INFO.phone}</span>
             </a>
 
@@ -1453,9 +1474,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
               href={getGeneralWhatsAppUrl(isTelugu)}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm shadow-xl transition-transform hover:-translate-y-0.5 flex items-center gap-2"
+              aria-label="Contact Lasya Water Purifiers on WhatsApp"
+              className="px-6 py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-xl transition-transform hover:-translate-y-0.5 flex items-center gap-2"
             >
-              <MessageCircle className="w-4 h-4 fill-white text-emerald-500" />
+              <MessageCircle className="w-4 h-4 fill-white text-emerald-700" />
               <span>WhatsApp Now</span>
             </a>
 
@@ -1478,7 +1500,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Location Details */}
             <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-600 block">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-800 block">
                 {t("Store Location", "మా చిరునామా")}
               </span>
               <h2 className="text-3xl font-extrabold text-slate-900">

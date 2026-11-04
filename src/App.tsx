@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { PageRoute } from './types';
 import { LanguageProvider } from './context/LanguageContext';
 import { SmoothScrollProvider, useSmoothScroll } from './context/SmoothScrollContext';
@@ -7,16 +7,24 @@ import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
 import { InstallAppModal } from './components/InstallAppModal';
 import { HomePage } from './pages/HomePage';
-import { AboutPage } from './pages/AboutPage';
-import { WaterPurifiersPage } from './pages/WaterPurifiersPage';
-import { AppliancesPage } from './pages/AppliancesPage';
-import { ServicesPage } from './pages/ServicesPage';
-import { ServiceBookingPage } from './pages/ServiceBookingPage';
-import { SparePartsPage } from './pages/SparePartsPage';
-import { GalleryPage } from './pages/GalleryPage';
-import { ReviewsPage } from './pages/ReviewsPage';
-import { ContactPage } from './pages/ContactPage';
-import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+
+// Code-split non-critical routes for faster initial load & higher Lighthouse score
+const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const WaterPurifiersPage = lazy(() => import('./pages/WaterPurifiersPage').then(m => ({ default: m.WaterPurifiersPage })));
+const AppliancesPage = lazy(() => import('./pages/AppliancesPage').then(m => ({ default: m.AppliancesPage })));
+const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
+const ServiceBookingPage = lazy(() => import('./pages/ServiceBookingPage').then(m => ({ default: m.ServiceBookingPage })));
+const SparePartsPage = lazy(() => import('./pages/SparePartsPage').then(m => ({ default: m.SparePartsPage })));
+const GalleryPage = lazy(() => import('./pages/GalleryPage').then(m => ({ default: m.GalleryPage })));
+const ReviewsPage = lazy(() => import('./pages/ReviewsPage').then(m => ({ default: m.ReviewsPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
+
+const PageFallback = () => (
+  <div className="min-h-[60vh] flex items-center justify-center" aria-label="Loading page">
+    <div className="w-10 h-10 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const validPages: PageRoute[] = [
   'home', 'about', 'water-purifiers', 'appliances', 'services', 
@@ -71,54 +79,56 @@ export function AppContent() {
           />
         )}
 
-        {currentPage === 'about' && (
-          <AboutPage onNavigate={navigateTo} />
-        )}
+        <Suspense fallback={<PageFallback />}>
+          {currentPage === 'about' && (
+            <AboutPage onNavigate={navigateTo} />
+          )}
 
-        {currentPage === 'water-purifiers' && (
-          <WaterPurifiersPage 
-            onNavigate={navigateTo} 
-            onSelectService={(srv) => setSelectedService(srv)} 
-          />
-        )}
+          {currentPage === 'water-purifiers' && (
+            <WaterPurifiersPage 
+              onNavigate={navigateTo} 
+              onSelectService={(srv) => setSelectedService(srv)} 
+            />
+          )}
 
-        {currentPage === 'appliances' && (
-          <AppliancesPage onNavigate={navigateTo} />
-        )}
+          {currentPage === 'appliances' && (
+            <AppliancesPage onNavigate={navigateTo} />
+          )}
 
-        {currentPage === 'services' && (
-          <ServicesPage 
-            onNavigate={navigateTo} 
-            onSelectService={(srv) => setSelectedService(srv)} 
-          />
-        )}
+          {currentPage === 'services' && (
+            <ServicesPage 
+              onNavigate={navigateTo} 
+              onSelectService={(srv) => setSelectedService(srv)} 
+            />
+          )}
 
-        {currentPage === 'service-booking' && (
-          <ServiceBookingPage 
-            initialService={selectedService} 
-            onNavigateHome={() => navigateTo('home')} 
-          />
-        )}
+          {currentPage === 'service-booking' && (
+            <ServiceBookingPage 
+              initialService={selectedService} 
+              onNavigateHome={() => navigateTo('home')} 
+            />
+          )}
 
-        {currentPage === 'spare-parts' && (
-          <SparePartsPage onNavigate={navigateTo} />
-        )}
+          {currentPage === 'spare-parts' && (
+            <SparePartsPage onNavigate={navigateTo} />
+          )}
 
-        {currentPage === 'gallery' && (
-          <GalleryPage onNavigate={navigateTo} />
-        )}
+          {currentPage === 'gallery' && (
+            <GalleryPage onNavigate={navigateTo} />
+          )}
 
-        {currentPage === 'reviews' && (
-          <ReviewsPage onNavigate={navigateTo} />
-        )}
+          {currentPage === 'reviews' && (
+            <ReviewsPage onNavigate={navigateTo} />
+          )}
 
-        {currentPage === 'contact' && (
-          <ContactPage onNavigate={navigateTo} />
-        )}
+          {currentPage === 'contact' && (
+            <ContactPage onNavigate={navigateTo} />
+          )}
 
-        {currentPage === 'privacy' && (
-          <PrivacyPolicyPage onNavigate={navigateTo} />
-        )}
+          {currentPage === 'privacy' && (
+            <PrivacyPolicyPage onNavigate={navigateTo} />
+          )}
+        </Suspense>
       </main>
 
       {/* Corporate Footer */}

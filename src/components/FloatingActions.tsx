@@ -41,7 +41,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ onNavigate }) 
           title="Smooth Scroll to Top"
           aria-label="Scroll to top"
         >
-          <ChevronUp className="w-5 h-5 text-cyan-600 group-hover:-translate-y-0.5 transition-transform duration-200" />
+          <ChevronUp className="w-5 h-5 text-cyan-800 group-hover:-translate-y-0.5 transition-transform duration-200" />
         </button>
       )}
 
@@ -79,7 +79,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ onNavigate }) 
           href={getGeneralWhatsAppUrl(isTelugu)}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative flex items-center gap-2.5 px-4 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl hover:shadow-emerald-500/50 transition-all duration-200 transform hover:scale-105 active:scale-95"
+          className="relative flex items-center gap-2.5 px-4 py-3.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-2xl hover:shadow-emerald-700/50 transition-all duration-200 transform hover:scale-105 active:scale-95"
           title="Direct WhatsApp Business Chat"
           aria-label="Direct WhatsApp Business Chat"
         >
