@@ -327,10 +327,20 @@
     </div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
+      // Automatically clean up any legacy service workers & clear stale caches
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('./sw.js').catch(function() {});
-        });
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (var i = 0; i < registrations.length; i++) {
+            registrations[i].unregister();
+          }
+        }).catch(function() {});
+        if ('caches' in window) {
+          caches.keys().then(function(keys) {
+            for (var j = 0; j < keys.length; j++) {
+              caches.delete(keys[j]);
+            }
+          }).catch(function() {});
+        }
       }
     </script>
   </body>

@@ -29,32 +29,45 @@ export const SmoothScrollProvider: React.FC<SmoothScrollProviderProps> = ({ chil
       return;
     }
 
-    // Initialize Lenis Smooth Scroll Engine
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential deceleration
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.5,
-      infinite: false,
-      autoRaf: true, // Use Lenis modern built-in RAF loop
-    });
+    // Disable Lenis on touch/mobile screens to ensure 100% native, jitter-free 120Hz hardware momentum scrolling
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth < 1024;
+    
+    let lenis: Lenis | null = null;
 
-    lenisRef.current = lenis;
-    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    if (!isTouchDevice) {
+      // Initialize Lenis Smooth Scroll Engine strictly for Desktop Mouse Wheel
+      lenis = new Lenis({
+        duration: 1.0,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+        syncTouch: false, // NEVER hijack mobile touch gestures to prevent scroll-locking
+        autoRaf: true,
+      });
 
-    // Handle global anchor links smoothly
+      lenisRef.current = lenis;
+      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    }
+
+    // Handle global anchor links smoothly and safely without crashing
     const handleAnchorClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest('a');
       if (!target) return;
       const href = target.getAttribute('href');
       if (href && href.startsWith('#') && href.length > 1) {
-        const element = document.querySelector(href);
-        if (element) {
-          e.preventDefault();
-          lenis.scrollTo(element as HTMLElement, { offset: -80 });
+        try {
+          const element = document.querySelector(href);
+          if (element) {
+            e.preventDefault();
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(element as HTMLElement, { offset: -80 });
+            } else {
+              const top = (element as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
+              window.scrollTo({ top, behavior: 'smooth' });
+            }
+          }
+        } catch {
+          // Ignore invalid selector queries safely
         }
       }
     };
@@ -63,7 +76,9 @@ export const SmoothScrollProvider: React.FC<SmoothScrollProviderProps> = ({ chil
 
     return () => {
       document.removeEventListener('click', handleAnchorClick);
-      lenis.destroy();
+      if (lenis) {
+        lenis.destroy();
+      }
       lenisRef.current = null;
       delete (window as unknown as { __lenis?: Lenis }).__lenis;
     };

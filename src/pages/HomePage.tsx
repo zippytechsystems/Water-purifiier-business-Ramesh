@@ -423,9 +423,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
       {/* SECTION 1: HERO SECTION                                 */}
       {/* ======================================================= */}
       <section className="relative overflow-hidden bg-hero-mesh text-white pt-10 pb-16 lg:pt-14 lg:pb-24">
-        {/* Decorative Floating Droplets & Glows */}
-        <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-blue-600/20 blur-3xl pointer-events-none"></div>
+        {/* Decorative Floating Droplets & Glows with Hardware Accelerated Gradient */}
+        <div className="absolute top-10 left-10 w-72 h-72 rounded-full pointer-events-none opacity-60" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)' }}></div>
+        <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full pointer-events-none opacity-60" style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%)' }}></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
@@ -1147,9 +1147,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
       {/* SECTION 9: LOCAL SERVICE AREAS & COVERAGE (SEO RANKING) */}
       {/* ======================================================= */}
       <section id="service-areas" className="py-20 bg-slate-900 text-white relative overflow-hidden scroll-defer">
-        {/* Subtle Background Glows */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        {/* Subtle Background Glows with Hardware Accelerated Gradient */}
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none opacity-40" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 70%)' }}></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full pointer-events-none opacity-40" style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)' }}></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
@@ -1294,9 +1294,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectService,
       {/* Targeted for Google #1 Ranking for Ragunadhpally & Jangaon */}
       {/* ======================================================= */}
       <section id="faqs" className="py-20 bg-slate-900 text-white scroll-defer relative overflow-hidden border-t border-slate-800">
-        {/* Ambient background glows */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        {/* Ambient background glows with Hardware Accelerated Gradient */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full pointer-events-none opacity-40" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 70%)' }}></div>
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full pointer-events-none opacity-40" style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)' }}></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}

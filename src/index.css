@@ -9,7 +9,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     font-family: var(--font-sans);
     -webkit-overflow-scrolling: touch;
     text-rendering: optimizeLegibility;
@@ -22,7 +21,6 @@
     background-color: #f8fafc;
     color: #0f172a;
     overflow-x: hidden;
-    overscroll-behavior-y: none;
   }
 
   /* Eliminate 300ms mobile touch delay & remove tap flicker across website and app */
@@ -94,11 +92,10 @@ html.lenis body {
 }
 
 /* ==================================================================== */
-/* Modern Web Guidance: Off-Screen Section Deferral (60-120 FPS Boost)  */
+/* High-Performance Section Isolation (Zero Scroll-Stutter)            */
 /* ==================================================================== */
 .scroll-defer {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 650px;
+  contain: layout style;
 }
 
 /* GPU Hardware Compositing Layer for Sticky & Floating Elements */
