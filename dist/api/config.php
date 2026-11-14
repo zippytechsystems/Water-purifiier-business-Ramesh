@@ -1,10 +1,17 @@
 <?php
 /**
  * Priya's AquaFresh – Lasya Water Purifier Sales & Services
- * Hostinger / cPanel MySQL Database Configuration & Helper
+ * Hostinger / cPanel MySQL Database Configuration, Debugging & Error Logging
  */
 
-// Allow cross-origin requests
+// Debugging & Error Logging Configuration:
+// Logs all notices, warnings, and errors to a private file without breaking JSON outputs or showing raw stack traces to users.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+ini_set('error_log', __DIR__ . '/error.log');
+error_reporting(E_ALL);
+
+// Allow cross-origin requests & standard JSON headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
@@ -33,20 +40,28 @@ function getDbConnection() {
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_TIMEOUT            => 3, // 3-second timeout to prevent server hanging
         ];
         return new PDO($dsn, $DB_USER, $DB_PASS, $options);
     } catch (PDOException $e) {
-        // Return null if database is not yet configured or connection fails
+        // Record debug reason in private error.log without crashing application
+        error_log("[DB Warning] Could not connect to MySQL: " . $e->getMessage());
         return null;
     }
 }
 
 function sendJsonResponse($status, $data = [], $message = '') {
-    echo json_encode([
+    $payload = [
         'status' => $status,
         'message' => $message,
         'data' => $data,
         'timestamp' => date('c')
-    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    ];
+
+    if ($status === 'error') {
+        error_log("[API Error Response] " . $message . " | Payload: " . json_encode($data));
+    }
+
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     exit();
 }

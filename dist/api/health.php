@@ -1,4 +1,9 @@
 <?php
+/**
+ * Priya's AquaFresh – Lasya Water Purifier
+ * System Diagnostics, Server Health & MySQL Status Check
+ */
+
 require_once __DIR__ . '/config.php';
 
 $pdo = getDbConnection();
@@ -14,13 +19,27 @@ if ($dbConnected) {
     }
 }
 
-sendJsonResponse('ok', [
-    'app'          => "Priya's AquaFresh – Lasya Water Purifier",
-    'php_version'  => PHP_VERSION,
-    'server_time'  => date('Y-m-d H:i:s T'),
-    'db_connected' => $dbConnected,
-    'db_tables'    => $tables,
-    'endpoints'    => [
+// System Diagnostic Metrics
+$diagnostics = [
+    'app'                 => "Priya's AquaFresh – Lasya Water Purifier",
+    'status'              => 'operational',
+    'php_version'         => PHP_VERSION,
+    'server_software'     => $_SERVER['SERVER_SOFTWARE'] ?? 'Hostinger Apache / LiteSpeed',
+    'server_time'         => date('Y-m-d H:i:s T'),
+    'database'            => [
+        'connected' => $dbConnected,
+        'host'      => $DB_HOST,
+        'database'  => $DB_NAME,
+        'tables'    => $tables
+    ],
+    'extensions_loaded'   => [
+        'pdo'       => extension_loaded('pdo'),
+        'pdo_mysql' => extension_loaded('pdo_mysql'),
+        'json'      => extension_loaded('json'),
+        'mbstring'  => extension_loaded('mbstring')
+    ],
+    'writable_log'        => is_writable(__DIR__),
+    'endpoints'           => [
         'POST /api/bookings.php'  => 'Create doorstep service booking',
         'GET  /api/bookings.php'  => 'List service bookings',
         'POST /api/enquiries.php' => 'Submit customer enquiry',
@@ -29,4 +48,10 @@ sendJsonResponse('ok', [
         'GET  /api/reviews.php'   => 'Retrieve approved customer reviews',
         'GET  /api/health.php'    => 'System diagnostics & MySQL status'
     ]
-], $dbConnected ? 'Hostinger MySQL database connected and operational' : 'PHP server active; MySQL database pending configuration in config.php');
+];
+
+$message = $dbConnected 
+    ? 'All systems operational. Hostinger MySQL database connected.' 
+    : 'PHP server active and healthy. MySQL database configuration pending in api/config.php (fallback mode active).';
+
+sendJsonResponse('ok', $diagnostics, $message);
