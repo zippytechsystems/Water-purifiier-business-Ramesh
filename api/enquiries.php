@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         sendJsonResponse('error', null, 'Invalid JSON payload received');
     }
 
-    $customer_name   = trim($input['customer_name'] ?? '');
-    $mobile_number   = trim($input['mobile_number'] ?? '');
+    $customer_name   = trim($input['customer_name'] ?? $input['name'] ?? '');
+    $mobile_number   = trim($input['mobile_number'] ?? $input['phone'] ?? '');
     $interest        = trim($input['product_or_service_interest'] ?? 'General Enquiry');
     $village_town    = trim($input['village_town'] ?? 'Raghunathpally');
     $message         = trim($input['message'] ?? '');
