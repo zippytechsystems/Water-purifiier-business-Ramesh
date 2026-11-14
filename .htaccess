@@ -17,7 +17,7 @@ ErrorDocument 404 /index.html
   AddType application/json .json
 </IfModule>
 
-# 4. HTTPS Enforcement & Smart SPA Routing
+# 4. HTTPS Enforcement & Smart Native PHP/SPA Routing
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -25,11 +25,6 @@ ErrorDocument 404 /index.html
   # Force HTTPS
   RewriteCond %{HTTPS} off
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-  # If user deployed whole repo and dist/index.html exists, route requests to dist/
-  RewriteCond %{DOCUMENT_ROOT}/dist/index.html -f
-  RewriteCond %{REQUEST_URI} !^/dist/
-  RewriteRule ^(.*)$ dist/$1 [L]
 
   # If file or directory exists physically, serve it directly
   RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -39,8 +34,8 @@ ErrorDocument 404 /index.html
   # Allow direct access to Hostinger PHP REST API
   RewriteRule ^api/ - [L]
 
-  # Single Page Application (SPA) routing
-  RewriteRule ^ index.html [L]
+  # Single Page Application (SPA) routing to index.html or index.php
+  RewriteRule ^ index.php [L]
 </IfModule>
 
 # 5. GZIP Compression for Blazing Fast Mobile Loads

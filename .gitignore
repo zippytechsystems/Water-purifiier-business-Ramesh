@@ -1,6 +1,11 @@
+# Local source backup
+_source_backup/
+*.zip
+
 # Logs
 logs
 *.log
+api/error.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
